@@ -46,6 +46,7 @@ const volumeBtn = document.getElementById('volumeBtn');
 const volumeIcon = document.getElementById('volumeIcon');
 
 document.addEventListener('DOMContentLoaded', () => {
+  document.documentElement.classList.add('flipbook-mode');
   document.body.classList.add('flipbook-mode');
   fetchWishesData();
 
@@ -54,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
   btnGridView.addEventListener('click', () => switchView('grid'));
   prevPageBtn.addEventListener('click', goToPrevPage);
   nextPageBtn.addEventListener('click', goToNextPage);
+
 
 
   // Audio Control listener
@@ -94,16 +96,19 @@ function switchView(viewName) {
     gridSection.classList.remove('active');
     btnFlipbookView.classList.add('active');
     btnGridView.classList.remove('active');
+    document.documentElement.classList.add('flipbook-mode');
     document.body.classList.add('flipbook-mode');
   } else {
     gridSection.classList.add('active');
     flipbookSection.classList.remove('active');
     btnGridView.classList.add('active');
     btnFlipbookView.classList.remove('active');
+    document.documentElement.classList.remove('flipbook-mode');
     document.body.classList.remove('flipbook-mode');
     renderGridCards();
   }
 }
+
 
 
 // Get photo URL for card index (Randomized / Cycled from Jimmy's Instagram list)
