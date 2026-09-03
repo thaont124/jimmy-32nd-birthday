@@ -1,0 +1,26 @@
+{
+  "name": "jimmy-32nd-birthday-memory-book",
+  "version": "1.0.0",
+  "description": "Cuốn Lưu Bút Sinh Nhật Tuổi 32 của Jimmy Jitaraphol (P'Jim)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "jimmy-jitaraphol",
+    "jimmysea",
+    "birthday-memory-book",
+    "render-deploy"
+  ],
+  "author": "Fan Club P'Jim",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "xlsx": "^0.18.5"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

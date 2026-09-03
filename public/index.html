@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lưu Bút Sinh Nhật Tuổi 32 - Jimmy Jitaraphol 💜✨</title>
+  <meta name="description" content="Cuốn lưu bút đong đầy tình yêu thương và những lời chúc tốt đẹp nhất của Nomnoms & fans dành tặng sinh nhật tuổi 32 cho P'Jim (Dr. Jimmy Jitaraphol Potiwihok).">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Montserrat:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Canvas cho hiệu ứng đom đóm / lấp lánh particles -->
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- Background Overlay với ảnh nền xanh lá đính kèm -->
+  <div class="bg-layer" style="background-image: url('/assets/background.jpg');"></div>
+  <div class="bg-blur-glow"></div>
+
+  <!-- Header & Toolbar -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="crown-badge"><i class="fa-solid fa-crown"></i> 32nd Birthday</div>
+        <h1 class="main-title">Jimmy Jitaraphol</h1>
+        <p class="subtitle">✨ Memory Book • Cuốn Lưu Bút Sinh Nhật Tuổi 32 ✨</p>
+      </div>
+
+      <div class="header-actions">
+        <!-- Nút phát nhạc -->
+        <button id="musicToggleBtn" class="action-btn music-btn" title="Phát nhạc nền nhẹ nhàng">
+          <i class="fa-solid fa-music"></i> <span id="musicText">Phát Nhạc</span>
+        </button>
+
+        <!-- Nút Quản lý Ảnh P'Jim -->
+        <button id="managePhotosBtn" class="action-btn photo-mgr-btn" title="Cập nhật danh sách link ảnh của P'Jim">
+          <i class="fa-solid fa-images"></i> <span>Dán Link Ảnh</span>
+        </button>
+
+        <!-- Nút Gửi lời chúc -->
+        <button id="openWishModalBtn" class="action-btn wish-btn">
+          <i class="fa-solid fa-pen-fancy"></i> <span>Gửi Lời Chúc</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Navigation & Search Filter -->
+    <div class="nav-bar">
+      <div class="view-toggles">
+        <button id="btnFlipbookView" class="toggle-btn active">
+          <i class="fa-solid fa-book-open"></i> Lật Sách (Flipbook)
+        </button>
+        <button id="btnGridView" class="toggle-btn">
+          <i class="fa-solid fa-border-all"></i> Xem Dạng Lưới (27+ Trang)
+        </button>
+      </div>
+
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="searchInput" placeholder="Tìm tên bạn / lời chúc...">
+        <button id="clearSearchBtn" class="clear-btn" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="stats-badge">
+        <span id="wishCountBadge"><i class="fa-solid fa-heart"></i> 27 Lời Chúc</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="app-main">
+    <!-- VIEW 1: FLIPBOOK / PAGE BY PAGE VIEW -->
+    <section id="flipbookSection" class="view-section active">
+      <div class="flipbook-wrapper">
+        <!-- Controls Left -->
+        <button id="prevPageBtn" class="nav-arrow left-arrow" title="Trang trước">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+        <!-- Book Stage -->
+        <div class="book-stage">
+          <div id="activeCardContainer" class="card-display-area">
+            <!-- Dynamic Active Card rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Controls Right -->
+        <button id="nextPageBtn" class="nav-arrow right-arrow" title="Trang sau">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+
+      <!-- Book Pagination Indicator -->
+      <div class="pagination-bar">
+        <span id="pageIndicatorText">Trang 1 / 27</span>
+        <div class="page-dots" id="pageDots"></div>
+      </div>
+    </section>
+
+    <!-- VIEW 2: GRID / SCRAPBOOK GALLERY VIEW -->
+    <section id="gridSection" class="view-section">
+      <div class="grid-header">
+        <h2><i class="fa-solid fa-book-bookmark"></i> Bộ Sưu Tập Lưu Bút Đa Dạng Layout</h2>
+        <p>Mỗi trang lưu niệm mang 1 thiết kế riêng biệt, đầy màu sắc dành tặng P'Jim</p>
+      </div>
+      <div id="cardsGridContainer" class="cards-grid">
+        <!-- Dynamic Cards grid rendered by JS -->
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL: Gửi Lời Chúc Mới -->
+  <div id="wishModal" class="modal">
+    <div class="modal-content glass-card">
+      <button class="close-modal-btn" id="closeWishModalBtn">&times;</button>
+      <div class="modal-header">
+        <i class="fa-solid fa-cake-candles modal-icon"></i>
+        <h2>Gửi Lời Chúc Sinh Nhật Tuổi 32 Cho P'Jim</h2>
+        <p>Lời chúc của bạn sẽ xuất hiện ngay trong cuốn lưu bút này!</p>
+      </div>
+      <form id="wishForm">
+        <div class="form-group">
+          <label for="fanNameInput"><i class="fa-solid fa-user"></i> Tên của bạn ("Chúng mình gọi bạn là gì:"):</label>
+          <input type="text" id="fanNameInput" placeholder="Ví dụ: Nomnom, Linh Vũ, Fan cứng P'Jim..." required>
+        </div>
+        <div class="form-group">
+          <label for="fanFbInput"><i class="fa-brands fa-facebook"></i> Link Facebook (Tùy chọn):</label>
+          <input type="url" id="fanFbInput" placeholder="https://facebook.com/your-profile">
+        </div>
+        <div class="form-group">
+          <label for="fanWishInput"><i class="fa-solid fa-envelope-open-text"></i> Lời chúc sinh nhật tới P'Jim:</label>
+          <textarea id="fanWishInput" rows="5" placeholder="Viết những lời yêu thương chân thành nhất gửi tới Bác sĩ Jimmy..." required></textarea>
+        </div>
+        <button type="submit" class="submit-wish-btn">
+          <i class="fa-solid fa-paper-plane"></i> Đẩy Lời Chúc Vào Cuốn Lưu Bút
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Quản Lý Link Ảnh Jimmy -->
+  <div id="photoModal" class="modal">
+    <div class="modal-content glass-card">
+      <button class="close-modal-btn" id="closePhotoModalBtn">&times;</button>
+      <div class="modal-header">
+        <i class="fa-solid fa-images modal-icon"></i>
+        <h2>Cập Nhật Link Ảnh P'Jim</h2>
+        <p>Dán danh sách các đường link ảnh (URL) của Jimmy Jitaraphol (mỗi link 1 dòng):</p>
+      </div>
+      <form id="photoForm">
+        <div class="form-group">
+          <textarea id="photoUrlsInput" rows="7" placeholder="https://example.com/jimmy1.jpg&#10;https://example.com/jimmy2.jpg&#10;https://example.com/jimmy3.jpg"></textarea>
+        </div>
+        <button type="submit" class="submit-wish-btn">
+          <i class="fa-solid fa-check"></i> Lưu Danh Sách Link Ảnh
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Audio Player (Synth Background Sound) -->
+  <audio id="bgAudio" loop style="display:none;"></audio>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <p>Happy 32nd Birthday Dr. Jimmy Jitaraphol Potiwihok 🥑💜 • Designed with Love by Nomnoms & Fans</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
