@@ -3,9 +3,10 @@ let wishesData = [];
 let currentPageIndex = 0;
 let isAudioPlaying = false;
 
-// Array of 27 Authentic Jimmy Jitaraphol Photos stored locally in public/assets/jimmy/
-// This ensures 100% fast loading, no expired Instagram CDN tokens, and 27 unique pictures for 27 wishes!
-let JIMMY_PHOTOS = Array.from({ length: 27 }, (_, i) => `/assets/jimmy/jimmy_${i + 1}.jpg`);
+// 81 Authentic Jimmy Jitaraphol Photos downloaded locally from the user's provided list!
+// 100% offline-ready, no expired CDN tokens, and 81 unique photos for all wishes!
+const TOTAL_JIMMY_PHOTOS = 81;
+let JIMMY_PHOTOS = Array.from({ length: TOTAL_JIMMY_PHOTOS }, (_, i) => `/assets/jimmy/jimmy_${i + 1}.jpg`);
 
 // Fisher-Yates Shuffle Algorithm to randomize photo order on every page load
 function shuffleArray(array) {
@@ -105,7 +106,7 @@ function switchView(viewName) {
   }
 }
 
-// Get photo URL for card index (Randomized unique photo for each of the 27 cards)
+// Get photo URL for card index (Randomized unique photo for each card)
 function getJimmyPhotoForIndex(index) {
   return JIMMY_PHOTOS[index % JIMMY_PHOTOS.length];
 }
