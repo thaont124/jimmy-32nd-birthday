@@ -148,13 +148,14 @@ function createCardElement(wishItem, index) {
     </div>
 
     <div class="card-footer">
-      <span>Sinh nhật 32 tuổi P'Jim</span>
-      ${isFb ? `<a href="${escapeHtml(wishItem.fb)}" target="_blank" rel="noopener" class="fb-link"><i class="fa-brands fa-facebook"></i> Facebook</a>` : ''}
+      <span><i class="fa-solid fa-cake-candles" style="color:var(--gold-accent);"></i> Sinh nhật 32 tuổi P'Jim</span>
+      <span>Jimmy Jitaraphol</span>
     </div>
   `;
 
   return cardDiv;
 }
+
 
 // Render Flipbook Current Active Card
 function renderCurrentPage() {
