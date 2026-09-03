@@ -358,26 +358,37 @@ body.flipbook-mode {
   letter-spacing: 0.5px;
 }
 
-/* KHUNG ẢNH DÀI CHIỀU DỌC TỐI ƯU CHO KHUNG HÌNH NO-SCROLL */
+/* KHUNG ẢNH CHỨA TRỌN VẸN 100% BỨC ẢNH (NO CROPPING - KHÔNG BAO GIỜ BỊ CẮT ĐẦU HAY MẮT) */
 .card-image-wrap {
   width: 100%;
-  height: min(290px, 34vh); /* Tự co giãn theo màn hình để không gây cuộn */
+  height: min(310px, 36vh);
   border-radius: 12px;
   overflow: hidden;
   margin-bottom: 0.8rem;
   position: relative;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.4);
+}
+
+.style-polaroid .card-image-wrap {
+  background: #f0f0ed;
 }
 
 .card-image-wrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top center; /* Giữ khuôn mặt, đầu và mắt của P'Jim */
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain; /* Giữ trọn vẹn 100% bức ảnh không bị xén bớt bất kỳ góc nào */
+  object-position: center;
   transition: transform 0.5s ease;
+  border-radius: 6px;
 }
+
 
 .card-body {
   flex: 1;
