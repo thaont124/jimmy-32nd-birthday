@@ -247,7 +247,7 @@ body.flipbook-mode {
 
 .book-stage {
   flex: 1;
-  max-width: 960px; /* Khung Flipbook dàn rộng như album sách Mở */
+  max-width: 960px;
   width: 100%;
   height: 100%;
   display: flex;
@@ -358,7 +358,7 @@ body.flipbook-mode {
   opacity: 0.85;
 }
 
-/* Content Container wrapper - Dàn 2 trang album trong Flipbook Mode */
+/* Content Container wrapper */
 .card-content-wrapper {
   display: flex;
   flex: 1;
@@ -369,16 +369,16 @@ body.flipbook-mode {
   align-items: stretch;
 }
 
-/* Base Image Wrapper */
+/* Base Image Wrapper (Sạch đẹp, không bị thanh xám dư) */
 .card-image-wrap {
   position: relative;
   overflow: hidden;
   border-radius: 14px;
-  background: rgba(0, 0, 0, 0.35);
+  background: rgba(0, 0, 0, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.15);
 }
 
 .card-image-wrap img {
@@ -391,85 +391,92 @@ body.flipbook-mode {
   border-radius: 6px;
 }
 
-/* Base Body & Wish Container */
+/* Base Body & Wish Container (CĂN GIỮA DỌC & NGANG, CHỮ TO RÕ) */
 .card-body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: center;
   min-height: 0;
   height: 100%;
+  width: 100%;
 }
 
 .fan-name {
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   font-weight: 700;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.6rem;
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  justify-content: center;
+  gap: 0.5rem;
   flex-shrink: 0;
+  width: 100%;
+  text-align: center;
 }
 
 .wish-container {
   position: relative;
   flex: 1;
   min-height: 0;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 1rem 1.2rem;
-  border-radius: 14px;
-  background: rgba(0, 0, 0, 0.05);
+  align-items: center;      /* Căn giữa ngang */
+  justify-content: center;  /* Căn giữa dọc */
+  padding: 1.2rem 1.5rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.style-polaroid .wish-container,
+.style-vintage .wish-container {
+  background: rgba(0, 0, 0, 0.03);
 }
 
 .quote-bg {
   position: absolute;
-  top: 8px;
-  left: 10px;
-  font-size: 2.2rem;
-  opacity: 0.15;
+  top: 12px;
+  left: 14px;
+  font-size: 2.8rem;
+  opacity: 0.12;
   pointer-events: none;
 }
 
 .fan-wish {
-  font-size: 0.98rem;
-  line-height: 1.65;
+  font-size: 1.28rem;       /* Chữ to đẹp, đọc rõ ràng */
+  line-height: 1.7;
   white-space: pre-line;
-  flex: 1;
-  overflow-y: auto;
-  padding-right: 0.3rem;
+  text-align: center;       /* Căn giữa chữ */
+  width: 100%;
+  display: flex;
+  align-items: center;      /* Căn giữa nội dung văn bản */
+  justify-content: center;
+  margin: auto 0;           /* Không bao giờ bị dồn lên trên */
   position: relative;
   z-index: 2;
+  font-weight: 600;
+  overflow-y: auto;
+  padding: 0.4rem;
 }
 
-/* ARTISTIC SHORT WISH STYLING (KHÔNG CÒN KHOẢNG TRẮNG THỪA) */
-.short-wish-card .wish-container {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
+/* LỜI CHÚC PHONG CÁCH NGHỆ THUẬT & VIẾT TAY */
+.style-polaroid .fan-wish,
+.style-vintage .fan-wish,
 .short-wish-card .fan-wish {
-  font-size: 1.48rem;
+  font-size: 1.5rem;
   font-family: var(--font-hand);
-  line-height: 1.65;
-  text-align: center;
   font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  line-height: 1.75;
 }
 
 .wish-decor-sparkles {
   text-align: center;
   margin-top: 0.6rem;
-  font-size: 0.85rem;
-  letter-spacing: 2px;
+  font-size: 0.95rem;
+  letter-spacing: 3px;
   color: var(--gold-accent);
-  opacity: 0.9;
+  opacity: 0.95;
   flex-shrink: 0;
 }
 
@@ -484,10 +491,11 @@ body.flipbook-mode {
   color: var(--text-muted);
   flex-shrink: 0;
   z-index: 5;
+  width: 100%;
 }
 
 /* ==========================================================
-   6 COMPACT 2-PANEL PHOTOBOOK LAYOUTS (CÂN ĐỐI 100% KHÔNG ĐEN TRÊN)
+   6 COMPACT 2-PANEL PHOTOBOOK LAYOUTS
    ========================================================== */
 
 /* LAYOUT 1: POLAROID SCRAPBOOK (50% Left Photo, 50% Right Note) */
@@ -498,6 +506,7 @@ body.flipbook-mode {
   width: 48%;
   height: 100%;
   border: 4px solid #fff;
+  background: #eaeaea;
   box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 .flipbook-wrapper .layout-v1-polaroid .card-body {
@@ -576,6 +585,7 @@ body.flipbook-mode {
   width: 44%;
   height: 100%;
   border: 2px solid rgba(141, 110, 99, 0.4);
+  background: #e8ded1;
 }
 .flipbook-wrapper .layout-v5-vintage-letter .card-body {
   width: 56%;
@@ -644,7 +654,6 @@ body.flipbook-mode {
 }
 .film-holes-top { top: 35px; }
 .film-holes-bottom { bottom: 35px; }
-
 
 /* ==========================================================
    DẠNG LƯỚI (GRID VIEW STACKING LAYOUTS)
