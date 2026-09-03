@@ -9,15 +9,6 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
-
-// Set no-cache header for static files to prevent browser caching old CSS
-app.use((req, res, next) => {
-  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-  res.setHeader('Pragma', 'no-cache');
-  res.setHeader('Expires', '0');
-  next();
-});
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Parse Excel responses file
