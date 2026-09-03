@@ -52,26 +52,6 @@ const bgAudio = document.getElementById('bgAudio');
 const volumeBtn = document.getElementById('volumeBtn');
 const volumeIcon = document.getElementById('volumeIcon');
 
-// ResizeObserver theo dõi chính xác layout của từng thẻ wish container
-const wishResizeObserver = new ResizeObserver((entries) => {
-  entries.forEach(entry => {
-    const containerEl = entry.target;
-    const wishEl = containerEl.querySelector('.fan-wish');
-    if (!wishEl) return;
-
-    // Đo đạc chính xác scrollHeight thực tế của text so với height của container
-    const isOverflowing = wishEl.scrollHeight > containerEl.clientHeight + 4;
-
-    if (isOverflowing) {
-      containerEl.classList.add('is-overflowing');
-      containerEl.classList.remove('is-fit-centered');
-    } else {
-      containerEl.classList.add('is-fit-centered');
-      containerEl.classList.remove('is-overflowing');
-    }
-  });
-});
-
 document.addEventListener('DOMContentLoaded', () => {
   document.body.classList.add('flipbook-mode');
   
@@ -129,7 +109,7 @@ function switchView(viewName) {
     gridSection.classList.add('active');
     flipbookSection.classList.remove('active');
     btnGridView.classList.add('active');
-    btnFlipbookView.classList.remove('active');
+    btnGridView.classList.remove('active');
     document.body.classList.remove('flipbook-mode');
     renderGridCards();
   }
@@ -148,7 +128,17 @@ function createCardElement(wishItem, index) {
   const photoUrl = getJimmyPhotoForIndex(index);
   const fallbackUrl = '/assets/jimmy/jimmy_1.jpg';
   const wishText = wishItem.wish ? wishItem.wish.trim() : '';
-  const isShortWish = wishText.length < 80;
+
+  // Phân loại độ dài chính xác 100%:
+  // - Short: < 80 ký tự
+  // - Medium: 80 - 350 ký tự (như bài Đoàn Lê Na -> Căn giữa 100%)
+  // - Long: > 350 ký tự (như bài Jinnie -> Bắt đầu từ Dòng 1 & Cuộn mượt)
+  let lengthClass = 'medium-wish-card';
+  if (wishText.length < 80) {
+    lengthClass = 'short-wish-card';
+  } else if (wishText.length > 350) {
+    lengthClass = 'long-wish-card';
+  }
 
   // Unique decorative accents for scrapbook feeling
   let extraDecoration = '';
@@ -163,7 +153,7 @@ function createCardElement(wishItem, index) {
   }
 
   const cardDiv = document.createElement('div');
-  cardDiv.className = `memory-card ${styleClass} ${layoutClass} ${isShortWish ? 'short-wish-card' : ''}`;
+  cardDiv.className = `memory-card ${styleClass} ${layoutClass} ${lengthClass}`;
   cardDiv.innerHTML = `
     ${extraDecoration}
     
@@ -187,7 +177,7 @@ function createCardElement(wishItem, index) {
           <div class="fan-wish">${escapeHtml(wishText)}</div>
         </div>
 
-        ${isShortWish ? '<div class="wish-decor-sparkles">✦ ─── 💖 ✨ 💖 ─── ✦</div>' : ''}
+        ${lengthClass === 'short-wish-card' ? '<div class="wish-decor-sparkles">✦ ─── 💖 ✨ 💖 ─── ✦</div>' : ''}
       </div>
     </div>
 
@@ -196,12 +186,6 @@ function createCardElement(wishItem, index) {
       <span>Jimmy Jitaraphol</span>
     </div>
   `;
-
-  // Đăng ký ResizeObserver theo dõi khối wish container của card này
-  const containerEl = cardDiv.querySelector('.wish-container');
-  if (containerEl) {
-    wishResizeObserver.observe(containerEl);
-  }
 
   return cardDiv;
 }
@@ -217,6 +201,10 @@ function renderCurrentPage() {
   const currentWish = wishesData[currentPageIndex];
   const cardElement = createCardElement(currentWish, currentPageIndex);
   activeCardContainer.appendChild(cardElement);
+
+  // Đảm bảo bài chúc dài luôn ở vị trí scrollTop = 0 khi lật sang trang
+  const wishContainer = cardElement.querySelector('.wish-container');
+  if (wishContainer) wishContainer.scrollTop = 0;
 
   pageIndicatorText.textContent = `Trang ${currentPageIndex + 1} / ${wishesData.length}`;
   prevPageBtn.disabled = currentPageIndex === 0;

@@ -440,68 +440,67 @@ body.flipbook-mode {
   pointer-events: none;
 }
 
-/* 1. KHI NỘI DUNG LỜI CHÚC VỪA VẶN TRONG KHUNG (ĐOÀN LÊ NA & CÁC THẺ VỪA VẶN) */
-.wish-container.is-fit-centered {
-  display: flex;
-  flex-direction: column;
+/* ==========================================================
+   3 PHÂN LỚP THIẾT KẾ DỰA TRÊN ĐỘ DÀI NỘI DUNG (DETERMINISTIC STYLING)
+   ========================================================== */
+
+/* 1. LỜI CHÚC VỪA VẶN (80 - 350 KÝ TỰ - NHƯ ĐOÀN LÊ NA) -> CĂN GIỮA 100% CẢ DỌC & NGANG */
+.medium-wish-card .wish-container {
   justify-content: center;
   align-items: center;
 }
 
-.wish-container.is-fit-centered .fan-wish {
+.medium-wish-card .fan-wish {
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   margin: auto 0;
-  font-size: 1.25rem;
+  font-size: 1.22rem;
   line-height: 1.7;
   width: 100%;
-  height: auto;
   font-weight: 600;
   position: relative;
   z-index: 2;
-  overflow: visible;
+  white-space: pre-line;
 }
 
-/* 2. KHI LỜI CHÚC DÀI CẦN CUỘN (JINNIE & CÁC BÀI THƯ DÀI) */
-.wish-container.is-overflowing {
-  display: flex;
-  flex-direction: column;
+/* 2. LỜI CHÚC THƯ DÀI (> 350 KÝ TỰ - NHƯ JINNIE) -> HIỂN THỊ TỪ DÒNG 1 VÀ CHO CUỘN THOẢI MÁI */
+.long-wish-card .wish-container {
   justify-content: flex-start;
   align-items: stretch;
+  overflow-y: auto; /* Cho phép cuộn ngay trên wish-container */
 }
 
-.wish-container.is-overflowing .fan-wish {
+.long-wish-card .wish-container::-webkit-scrollbar {
+  width: 6px;
+}
+.long-wish-card .wish-container::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+.long-wish-card .wish-container::-webkit-scrollbar-thumb {
+  background: var(--primary-green);
+  border-radius: 4px;
+}
+
+.long-wish-card .fan-wish {
   display: block;
   text-align: left;
-  overflow-y: auto;
   font-size: 1.08rem;
-  line-height: 1.65;
-  height: 100%;
-  padding-right: 0.4rem;
+  line-height: 1.68;
   position: relative;
   z-index: 2;
   font-weight: 500;
   white-space: pre-line;
   margin: 0;
+  padding-right: 0.3rem;
 }
 
-/* Mini scrollbar mượt cho khối nội dung wish */
-.fan-wish::-webkit-scrollbar {
-  width: 5px;
-}
-.fan-wish::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.05);
-  border-radius: 4px;
-}
-.fan-wish::-webkit-scrollbar-thumb {
-  background: var(--primary-green);
-  border-radius: 4px;
-}
-
-/* ÁP DỤNG CĂN GIỮA NGHỆ THUẬT CHO CÁC LỜI CHÚC NGẮN (< 80 KÝ TỰ) */
+/* 3. LỜI CHÚC NGẮN (< 80 KÝ TỰ) -> VIẾT TAY NGHỆ THUẬT CĂN GIỮA */
 .short-wish-card .wish-container {
+  justify-content: center;
+  align-items: center;
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
@@ -513,6 +512,10 @@ body.flipbook-mode {
   line-height: 1.75;
   text-align: center;
   font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto 0;
 }
 
 .wish-decor-sparkles {
