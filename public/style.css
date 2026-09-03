@@ -10,7 +10,7 @@
   --text-light: #ffffff;
   --text-muted: #e0f2fe;
   --bg-glass: rgba(15, 45, 35, 0.45);
-  --bg-glass-card: rgba(20, 50, 40, 0.88);
+  --bg-glass-card: rgba(20, 50, 40, 0.92);
   --border-glass: rgba(255, 255, 255, 0.25);
   --font-main: 'Quicksand', sans-serif;
   --font-serif: 'Playfair Display', serif;
@@ -33,12 +33,12 @@ html, body {
   position: relative;
 }
 
-/* Ẩn cuộn trang hoàn toàn khi ở chế độ Flipbook trên màn hình desktop/laptop */
+/* Ẩn cuộn trang hoàn toàn khi ở chế độ Flipbook trên màn hình desktop */
 body.flipbook-mode {
   overflow: hidden;
 }
 
-/* Background Image Layer sử dụng ảnh nền.png */
+/* Background Image Layer */
 .bg-layer {
   position: fixed;
   top: 0;
@@ -62,9 +62,8 @@ body.flipbook-mode {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: rgba(15, 45, 35, 0.8);
+  background: rgba(15, 45, 35, 0.85);
   backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--emerald-glow);
   color: var(--emerald-glow);
   font-size: 1.2rem;
@@ -96,12 +95,12 @@ body.flipbook-mode {
 }
 
 /* ==========================================================
-   HEADER & LOGO & COMPACT TOGGLE (MAX WIDTH DÀN RỘNG 1600PX)
+   HEADER & LOGO & TOGGLE (DÀN RỘNG TOÀN MÀN HÌNH 1600PX)
    ========================================================== */
 .app-header {
   position: relative;
   z-index: 10;
-  padding: 0.6rem 1.5rem 0.2rem;
+  padding: 0.5rem 1.5rem 0.2rem;
   text-align: center;
 }
 
@@ -112,20 +111,14 @@ body.flipbook-mode {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.4rem;
-}
-
-.logo-wrapper {
-  display: flex;
-  justify-content: center;
-  width: 100%;
+  gap: 0.3rem;
 }
 
 .site-logo {
   max-width: 580px;
   width: 90%;
   height: auto;
-  max-height: 140px;
+  max-height: 135px;
   object-fit: contain;
   filter: drop-shadow(0 0 20px rgba(0, 255, 170, 0.45));
   transition: transform 0.3s ease;
@@ -135,7 +128,6 @@ body.flipbook-mode {
   transform: scale(1.04);
 }
 
-/* Compact Icon Toggle Buttons */
 .view-toggles-compact {
   display: flex;
   gap: 0.5rem;
@@ -169,7 +161,7 @@ body.flipbook-mode {
 }
 
 /* ==========================================================
-   MAIN LAYOUT & VIEWS (MAX WIDTH 1600PX DÀN DEU MÀN HÌNH)
+   MAIN LAYOUT & VIEWS (GÓI GỌN MÀN HÌNH - KHÔNG SCROLL TRONG FLIPBOOK)
    ========================================================== */
 .app-main {
   position: relative;
@@ -178,7 +170,7 @@ body.flipbook-mode {
   width: 95vw;
   margin: 0 auto;
   padding: 0 1rem;
-  height: calc(100vh - 190px);
+  height: calc(100vh - 185px);
   display: flex;
   flex-direction: column;
 }
@@ -211,13 +203,13 @@ body.flipbook-mode {
 }
 
 /* ==========================================================
-   VIEW 1: FLIPBOOK / STAGE VIEW (DÀN RỘNG KHUNG SÁCH 900PX)
+   VIEW 1: FLIPBOOK / STAGE VIEW (STAGE RỘNG DÀN ĐỀU MÀN HÌNH 920PX)
    ========================================================== */
 .flipbook-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 1.8rem;
   flex: 1;
   min-height: 0;
   margin: 0.2rem 0;
@@ -228,10 +220,10 @@ body.flipbook-mode {
   background: rgba(0, 0, 0, 0.55);
   border: 2px solid var(--border-glass);
   color: #fff;
-  width: 52px;
-  height: 52px;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
-  font-size: 1.3rem;
+  font-size: 1.35rem;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -255,7 +247,7 @@ body.flipbook-mode {
 
 .book-stage {
   flex: 1;
-  max-width: 900px; /* Dàn rộng stage flipbook */
+  max-width: 920px; /* Khung Flipbook dàn rộng cực kỳ vừa mắt */
   width: 100%;
   height: 100%;
   display: flex;
@@ -273,7 +265,7 @@ body.flipbook-mode {
 
 .pagination-bar {
   text-align: center;
-  padding: 0.4rem 0 0.6rem;
+  padding: 0.3rem 0 0.5rem;
   flex-shrink: 0;
 }
 
@@ -288,7 +280,7 @@ body.flipbook-mode {
   display: flex;
   justify-content: center;
   gap: 6px;
-  margin-top: 0.4rem;
+  margin-top: 0.3rem;
   flex-wrap: wrap;
   max-width: 650px;
   margin-left: auto;
@@ -311,11 +303,11 @@ body.flipbook-mode {
 }
 
 /* ==========================================================
-   VIEW 2: GRID VIEW (DÀN ĐỀU RỘNG TRÊN MÀN HÌNH 4-5 CỘT)
+   VIEW 2: GRID VIEW (DÀN NGHỆ THUẬT 4-5 CỘT)
    ========================================================== */
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   gap: 1.8rem;
   padding-bottom: 2.5rem;
   padding-top: 0.5rem;
@@ -323,20 +315,20 @@ body.flipbook-mode {
 }
 
 /* ==========================================================
-   MEMORY CARD DESIGNS & CONTENT LAYOUT
+   MEMORY CARD BASE STYLING
    ========================================================== */
 .memory-card {
   position: relative;
   border-radius: 20px;
-  padding: 1.4rem;
+  padding: 1.3rem;
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  max-height: calc(100vh - 210px);
+  max-height: calc(100vh - 200px);
   overflow: hidden;
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.5);
 }
 
 .flipbook-wrapper .memory-card {
@@ -347,8 +339,9 @@ body.flipbook-mode {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.7rem;
   flex-shrink: 0;
+  z-index: 5;
 }
 
 .card-badge {
@@ -360,47 +353,31 @@ body.flipbook-mode {
   letter-spacing: 0.5px;
 }
 
-/* Dynamic Content Grid (Support 2 columns in Flipbook Mode for widescreen) */
-.card-content-grid {
+.birthday-tag {
+  font-size: 0.8rem;
+  opacity: 0.85;
+}
+
+/* Content Container wrapper */
+.card-content-wrapper {
   display: flex;
-  flex-direction: column;
   flex: 1;
   min-height: 0;
-  gap: 0.8rem;
-}
-
-/* Trong Flipbook Stage ở màn hình desktop, dàn 2 cột đẹp như cuốn sách ảnh */
-.flipbook-wrapper .card-content-grid {
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  gap: 1.5rem;
-}
-
-/* Khung Ảnh (No Cropping) */
-.card-image-wrap {
+  gap: 1rem;
   width: 100%;
-  height: min(290px, 34vh);
-  border-radius: 14px;
-  overflow: hidden;
+  z-index: 5;
+}
+
+/* Base Image Wrapper */
+.card-image-wrap {
   position: relative;
+  overflow: hidden;
+  border-radius: 12px;
   background: rgba(0, 0, 0, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
   box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.4);
-}
-
-.flipbook-wrapper .card-image-wrap {
-  width: 46%;
-  height: 100%;
-  max-height: 440px;
-  margin-bottom: 0;
-}
-
-.style-polaroid .card-image-wrap {
-  background: #f0f0ed;
 }
 
 .card-image-wrap img {
@@ -410,28 +387,21 @@ body.flipbook-mode {
   height: auto;
   object-fit: contain;
   object-position: center;
-  transition: transform 0.5s ease;
   border-radius: 6px;
 }
 
-/* Card Body & Wish Container */
+/* Base Body & Wish Container */
 .card-body {
-  flex: 1;
-  min-height: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-}
-
-.flipbook-wrapper .card-body {
-  width: 54%;
-  height: 100%;
+  min-height: 0;
 }
 
 .fan-name {
   font-size: 1.1rem;
   font-weight: 700;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
   display: flex;
   align-items: center;
   gap: 0.4rem;
@@ -445,29 +415,22 @@ body.flipbook-mode {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0.9rem 1.1rem;
+  padding: 0.8rem 1rem;
   border-radius: 12px;
-  background: rgba(0, 0, 0, 0.04);
-  margin-top: 0.2rem;
-}
-
-.style-glass .wish-container,
-.style-pastel .wish-container,
-.style-gentleman .wish-container {
-  background: rgba(255, 255, 255, 0.07);
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .quote-bg {
   position: absolute;
-  top: 8px;
-  left: 10px;
+  top: 6px;
+  left: 8px;
   font-size: 2rem;
   opacity: 0.15;
   pointer-events: none;
 }
 
 .fan-wish {
-  font-size: 0.96rem;
+  font-size: 0.95rem;
   line-height: 1.6;
   white-space: pre-line;
   flex: 1;
@@ -477,111 +440,242 @@ body.flipbook-mode {
   z-index: 2;
 }
 
-/* CẢI TIẾN LỜI CHÚC NGẮN (XỬ LÝ DỰ TRỐNG & TĂNG THẨM MỸ) */
+/* ARTISTIC SHORT WISH STYLING (LỚP TRANG TRÍ DÀNH CHO LỜI CHÚC NGẮN) */
 .short-wish-card .wish-container {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px dashed rgba(255, 255, 255, 0.25);
-  box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
-}
-
-.style-polaroid.short-wish-card .wish-container,
-.style-vintage.short-wish-card .wish-container {
-  background: rgba(0, 0, 0, 0.03);
-  border-color: rgba(0, 0, 0, 0.15);
-}
-
-.short-wish-card .fan-wish {
-  font-size: 1.35rem;
-  font-family: var(--font-hand);
-  line-height: 1.65;
-  text-align: center;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.short-wish-card .fan-wish {
+  font-size: 1.45rem;
+  font-family: var(--font-hand);
+  line-height: 1.65;
+  text-align: center;
   font-weight: 700;
-  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .wish-decor-sparkles {
   text-align: center;
-  margin-top: 0.6rem;
-  font-size: 0.95rem;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
   color: var(--gold-accent);
-  opacity: 0.85;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
+  opacity: 0.9;
   flex-shrink: 0;
 }
 
-/* Custom mini scrollbar */
-.fan-wish::-webkit-scrollbar {
-  width: 4px;
-}
-.fan-wish::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 4px;
-}
-
 .card-footer {
-  margin-top: 0.8rem;
-  padding-top: 0.6rem;
+  margin-top: 0.7rem;
+  padding-top: 0.5rem;
   border-top: 1px dashed rgba(255, 255, 255, 0.2);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--text-muted);
   flex-shrink: 0;
+  z-index: 5;
 }
 
-/* 6 UNIQUE CARD DESIGN STYLES */
+/* ==========================================================
+   6 COMPLETELY DISTINCT STRUCTURAL LAYOUTS (6 BỐ CỤC KHÁC NHAU)
+   ========================================================== */
+
+/* LAYOUT 1: POLAROID SCRAPBOOK (Top Photo, Bottom Handwritten Note) */
+.layout-v1-polaroid .card-content-wrapper {
+  flex-direction: column;
+}
+
+.layout-v1-polaroid .card-image-wrap {
+  width: 100%;
+  height: min(280px, 32vh);
+}
+
+.flipbook-wrapper .layout-v1-polaroid .card-image-wrap {
+  height: min(320px, 36vh);
+}
+
+.layout-v1-polaroid .tape-sticker {
+  position: absolute;
+  top: -10px;
+  left: 38%;
+  width: 90px;
+  height: 24px;
+  background: rgba(240, 240, 210, 0.9);
+  transform: rotate(-2deg);
+  border: 1px dashed rgba(0,0,0,0.15);
+  z-index: 10;
+}
+
+/* LAYOUT 2: SPLIT LEFT PHOTO (Left 46% Photo, Right 54% Wish Box) */
+.layout-v2-split-left .card-content-wrapper {
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.layout-v2-split-left .card-image-wrap {
+  width: 46%;
+  height: 100%;
+  min-height: 220px;
+}
+
+.layout-v2-split-left .card-body {
+  width: 54%;
+  justify-content: center;
+}
+
+/* LAYOUT 3: SPLIT RIGHT PHOTO (Left Wish Letter + Right Photo 46%) */
+.layout-v3-split-right .card-content-wrapper {
+  flex-direction: row-reverse;
+  align-items: stretch;
+}
+
+.layout-v3-split-right .card-image-wrap {
+  width: 46%;
+  height: 100%;
+  min-height: 220px;
+}
+
+.layout-v3-split-right .card-body {
+  width: 54%;
+  justify-content: center;
+}
+
+.layout-v3-split-right .ribbon-tag {
+  position: absolute;
+  top: 15px;
+  left: -28px;
+  background: #e74c3c;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.2rem 1.8rem;
+  transform: rotate(-45deg);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  z-index: 10;
+}
+
+/* LAYOUT 4: HERO QUOTE BANNER (Wish Top Banner, Photo Bottom Centered) */
+.layout-v4-card-hero .card-content-wrapper {
+  flex-direction: column-reverse;
+}
+
+.layout-v4-card-hero .card-image-wrap {
+  width: 100%;
+  height: min(250px, 28vh);
+}
+
+.layout-v4-card-hero .card-body {
+  margin-bottom: 0.6rem;
+}
+
+.layout-v4-card-hero .wish-container {
+  background: rgba(241, 196, 15, 0.1);
+  border: 1px dashed rgba(241, 196, 15, 0.3);
+}
+
+/* LAYOUT 5: VINTAGE POSTCARD LETTER (Postcard with Stamp & Seal) */
+.layout-v5-vintage-letter .card-content-wrapper {
+  flex-direction: row;
+  align-items: center;
+}
+
+.layout-v5-vintage-letter .card-image-wrap {
+  width: 42%;
+  height: 100%;
+  min-height: 220px;
+  border: 2px solid rgba(141, 110, 99, 0.4);
+}
+
+.layout-v5-vintage-letter .card-body {
+  width: 58%;
+  padding-left: 0.4rem;
+}
+
+.postal-stamp {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  width: 46px;
+  height: 46px;
+  border: 2px dashed #b71c1c;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #b71c1c;
+  font-size: 0.58rem;
+  font-weight: 700;
+  transform: rotate(-12deg);
+  text-align: center;
+  z-index: 10;
+}
+
+.wax-seal {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  width: 32px;
+  height: 32px;
+  background: #c0392b;
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+  z-index: 10;
+}
+
+/* LAYOUT 6: CINEMATIC FILM STRIP (Full Wide Strip, Holes Top & Bottom) */
+.layout-v6-film-wide .card-content-wrapper {
+  flex-direction: column;
+}
+
+.layout-v6-film-wide .card-image-wrap {
+  width: 100%;
+  height: min(290px, 32vh);
+  border-radius: 6px;
+  border-left: 5px solid #00b4db;
+  border-right: 5px solid #00b4db;
+}
+
+.film-holes-top, .film-holes-bottom {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 10px;
+  background-image: radial-gradient(#666 40%, transparent 40%);
+  background-size: 16px 16px;
+  background-position: 0 0;
+  opacity: 0.6;
+}
+.film-holes-top { top: 35px; }
+.film-holes-bottom { bottom: 35px; }
+
+/* ==========================================================
+   6 VISUAL THEME COLORS & FONTS
+   ========================================================== */
 
 /* STYLE 1: POLAROID SCRAPBOOK */
 .style-polaroid {
   background: #fdfdfb;
   color: #1a1a1a;
   border: 8px solid #ffffff;
-  transform: rotate(-0.5deg);
   font-family: var(--font-main);
 }
-
-.style-polaroid .card-image-wrap {
-  border: 3px solid #fff;
-  border-radius: 6px;
-}
-
-.style-polaroid .fan-name {
-  color: #111;
-  font-family: var(--font-title);
-}
-
-.style-polaroid .fan-wish {
-  color: #2c3e50;
-}
-
-.style-polaroid .tape-sticker {
-  position: absolute;
-  top: -10px;
-  left: 35%;
-  width: 80px;
-  height: 22px;
-  background: rgba(230, 230, 200, 0.85);
-  transform: rotate(-3deg);
-  border: 1px dashed rgba(0,0,0,0.15);
-  z-index: 10;
-}
-
-.style-polaroid .card-badge {
-  background: #e74c3c;
-  color: #fff;
-}
-
-.style-polaroid .card-footer {
-  border-top-color: #ddd;
-  color: #666;
-}
+.style-polaroid .card-badge { background: #e74c3c; color: #fff; }
+.style-polaroid .card-footer { border-top-color: #ddd; color: #666; }
+.style-polaroid .fan-name { color: #111; font-family: var(--font-title); }
+.style-polaroid .fan-wish { color: #2c3e50; }
 
 /* STYLE 2: GLASSMORPHISM EMERALD */
 .style-glass {
@@ -590,96 +684,38 @@ body.flipbook-mode {
   border: 1px solid var(--emerald-glow);
   box-shadow: 0 0 25px rgba(0, 255, 170, 0.25);
 }
+.style-glass .card-badge { background: linear-gradient(135deg, #f1c40f, #e67e22); color: #111; }
+.style-glass .fan-name { color: var(--emerald-glow); font-family: var(--font-title); }
 
-.style-glass .fan-name {
-  color: var(--emerald-glow);
-  font-family: var(--font-title);
-}
-
-.style-glass .card-badge {
-  background: linear-gradient(135deg, #f1c40f, #e67e22);
-  color: #111;
-}
-
-/* STYLE 3: VINTAGE POSTCARD & STAMP */
+/* STYLE 3: VINTAGE POSTCARD */
 .style-vintage {
   background: #f4ecd8;
   color: #3e2723;
   border: 2px dashed #8d6e63;
-  transform: rotate(0.5deg);
   font-family: var(--font-serif);
 }
+.style-vintage .card-badge { background: #8d6e63; color: #fff; }
+.style-vintage .fan-name { color: #4e342e; border-bottom: 1px dashed #8d6e63; padding-bottom: 0.2rem; }
+.style-vintage .fan-wish { color: #3e2723; }
+.style-vintage .card-footer { border-top-color: #a1887f; color: #5d4037; }
 
-.style-vintage .fan-name {
-  color: #4e342e;
-  border-bottom: 2px solid #8d6e63;
-  padding-bottom: 0.2rem;
-}
-
-.style-vintage .fan-wish {
-  color: #3e2723;
-}
-
-.style-vintage .card-badge {
-  background: #8d6e63;
-  color: #fff;
-}
-
-.style-vintage .postal-stamp {
-  position: absolute;
-  top: 10px;
-  right: 12px;
-  width: 45px;
-  height: 45px;
-  border: 2px dashed #b71c1c;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #b71c1c;
-  font-size: 0.6rem;
-  font-weight: 700;
-  transform: rotate(-12deg);
-  text-align: center;
-  z-index: 10;
-}
-
-.style-vintage .card-footer {
-  border-top-color: #a1887f;
-  color: #5d4037;
-}
-
-/* STYLE 4: CINEMATIC FILM STRIP */
+/* STYLE 4: CINEMATIC FILM */
 .style-film {
-  background: #141414;
+  background: #121212;
   border: 2px solid #333;
   color: #eee;
 }
+.style-film .card-badge { background: #00b4db; color: #fff; }
+.style-film .fan-name { color: #a8ff78; }
 
-.style-film .fan-name {
-  color: #a8ff78;
-}
-
-.style-film .card-badge {
-  background: #00b4db;
-  color: #fff;
-}
-
-/* STYLE 5: PASTEL NOTEBOOK & RIBBON */
+/* STYLE 5: PASTEL NOTEBOOK */
 .style-pastel {
   background: linear-gradient(135deg, #2b1055, #7597de);
   border: 1px solid var(--purple-glow);
   box-shadow: 0 10px 30px rgba(155, 89, 182, 0.35);
 }
-
-.style-pastel .fan-name {
-  color: #ffdd59;
-}
-
-.style-pastel .card-badge {
-  background: #9b59b6;
-  color: #fff;
-}
+.style-pastel .card-badge { background: #9b59b6; color: #fff; }
+.style-pastel .fan-name { color: #ffdd59; }
 
 /* STYLE 6: DOCTOR GENTLEMAN LUXURY */
 .style-gentleman {
@@ -687,19 +723,11 @@ body.flipbook-mode {
   border: 2px solid #f1c40f;
   box-shadow: 0 0 20px rgba(241, 196, 15, 0.35);
 }
-
-.style-gentleman .fan-name {
-  color: #f1c40f;
-  font-family: var(--font-title);
-}
-
-.style-gentleman .card-badge {
-  background: #27ae60;
-  color: #fff;
-}
+.style-gentleman .card-badge { background: #27ae60; color: #fff; }
+.style-gentleman .fan-name { color: #f1c40f; font-family: var(--font-title); }
 
 /* ==========================================================
-   RESPONSIVE DESIGN (MOBILE & TABLET ADJUSTMENTS)
+   RESPONSIVE DESIGN (MOBILE ADAPTATION)
    ========================================================== */
 @media (max-width: 900px) {
   .header-container, .app-main {
@@ -709,16 +737,22 @@ body.flipbook-mode {
   .book-stage {
     max-width: 520px;
   }
-  .flipbook-wrapper .card-content-grid {
-    flex-direction: column;
+  .layout-v2-split-left .card-content-wrapper,
+  .layout-v3-split-right .card-content-wrapper,
+  .layout-v5-vintage-letter .card-content-wrapper {
+    flex-direction: column !important;
     gap: 0.8rem;
   }
-  .flipbook-wrapper .card-image-wrap {
-    width: 100%;
-    height: min(260px, 30vh);
+  .layout-v2-split-left .card-image-wrap,
+  .layout-v3-split-right .card-image-wrap,
+  .layout-v5-vintage-letter .card-image-wrap {
+    width: 100% !important;
+    height: min(250px, 30vh) !important;
   }
-  .flipbook-wrapper .card-body {
-    width: 100%;
+  .layout-v2-split-left .card-body,
+  .layout-v3-split-right .card-body,
+  .layout-v5-vintage-letter .card-body {
+    width: 100% !important;
   }
 }
 

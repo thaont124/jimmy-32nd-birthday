@@ -15,7 +15,7 @@ function shuffleArray(array) {
   }
 }
 
-// 6 Non-identical Design Styles
+// 6 Visual Color & Texture Styles
 const CARD_STYLES = [
   'style-polaroid',
   'style-glass',
@@ -23,6 +23,16 @@ const CARD_STYLES = [
   'style-film',
   'style-pastel',
   'style-gentleman'
+];
+
+// 6 Completely Distinct Structural Layouts (Mỗi trang 1 kiểu bố cục khác nhau)
+const CARD_LAYOUTS = [
+  'layout-v1-polaroid',      // Top Photo + Bottom Handwritten Note
+  'layout-v2-split-left',     // Left Photo + Right Quote Box
+  'layout-v3-split-right',    // Left Wish Letter + Right Photo
+  'layout-v4-card-hero',      // Top Hero Quote Banner + Bottom Photo
+  'layout-v5-vintage-letter', // Postcard Letter with Stamp + Off-center Photo
+  'layout-v6-film-wide'       // Cinematic Film Strip + Dark Glow Note
 ];
 
 // DOM Elements
@@ -110,39 +120,46 @@ function getJimmyPhotoForIndex(index) {
   return JIMMY_PHOTOS[index % JIMMY_PHOTOS.length];
 }
 
-// Create Card HTML element for a given wish item
+// Create Card HTML element for a given wish item with unique layout & styling
 function createCardElement(wishItem, index) {
   const styleClass = CARD_STYLES[index % CARD_STYLES.length];
+  const layoutClass = CARD_LAYOUTS[index % CARD_LAYOUTS.length]; // Each card gets a different layout structure!
+  
   const photoUrl = getJimmyPhotoForIndex(index);
   const fallbackUrl = '/assets/jimmy/jimmy_1.jpg';
   const wishText = wishItem.wish ? wishItem.wish.trim() : '';
-  const isShortWish = wishText.length < 75;
+  const isShortWish = wishText.length < 80;
 
-  // Decorative stamp/stickers
+  // Unique decorative accents for scrapbook feeling
   let extraDecoration = '';
-  if (styleClass === 'style-polaroid') {
+  if (layoutClass === 'layout-v1-polaroid') {
     extraDecoration = '<div class="tape-sticker"></div>';
-  } else if (styleClass === 'style-vintage') {
-    extraDecoration = '<div class="postal-stamp">JIMMY<br>AUG 21</div>';
+  } else if (layoutClass === 'layout-v5-vintage-letter') {
+    extraDecoration = '<div class="postal-stamp">JIMMY<br>AUG 21</div><div class="wax-seal">★</div>';
+  } else if (layoutClass === 'layout-v6-film-wide') {
+    extraDecoration = '<div class="film-holes-top"></div><div class="film-holes-bottom"></div>';
+  } else if (layoutClass === 'layout-v3-split-right') {
+    extraDecoration = '<div class="ribbon-tag">HAPPY 32ND</div>';
   }
 
   const cardDiv = document.createElement('div');
-  cardDiv.className = `memory-card ${styleClass} ${isShortWish ? 'short-wish-card' : ''}`;
+  cardDiv.className = `memory-card ${styleClass} ${layoutClass} ${isShortWish ? 'short-wish-card' : ''}`;
   cardDiv.innerHTML = `
     ${extraDecoration}
+    
     <div class="card-top">
-      <span class="card-badge">Trang #${index + 1}</span>
-      <span style="font-size: 0.8rem; opacity: 0.85;"><i class="fa-solid fa-sparkles"></i> 32nd Birthday</span>
+      <span class="card-badge"><i class="fa-solid fa-bookmark"></i> Trang #${index + 1}</span>
+      <span class="birthday-tag"><i class="fa-solid fa-sparkles"></i> 32nd Birthday</span>
     </div>
 
-    <div class="card-content-grid">
+    <div class="card-content-wrapper">
       <div class="card-image-wrap">
         <img src="${photoUrl}" alt="Jimmy Jitaraphol" loading="lazy" onerror="this.onerror=null; this.src='${fallbackUrl}'">
       </div>
 
       <div class="card-body">
         <div class="fan-name">
-          <i class="fa-solid fa-star" style="color:#f1c40f; font-size: 0.9rem;"></i> ${escapeHtml(wishItem.name)}
+          <i class="fa-solid fa-heart" style="color:#e74c3c; font-size: 0.9rem;"></i> ${escapeHtml(wishItem.name)}
         </div>
         
         <div class="wish-container">
@@ -150,7 +167,7 @@ function createCardElement(wishItem, index) {
           <div class="fan-wish">${escapeHtml(wishText)}</div>
         </div>
 
-        ${isShortWish ? '<div class="wish-decor-sparkles"><i class="fa-solid fa-heart"></i> <i class="fa-solid fa-sparkles"></i> <i class="fa-solid fa-heart"></i></div>' : ''}
+        ${isShortWish ? '<div class="wish-decor-sparkles">✦ ─── 💖 ✨ 💖 ─── ✦</div>' : ''}
       </div>
     </div>
 
