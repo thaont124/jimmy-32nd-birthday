@@ -422,7 +422,7 @@ body.flipbook-mode {
   flex-direction: column;
   padding: 1.2rem 1.4rem;
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.05);
   overflow: hidden;
 }
 
@@ -440,8 +440,10 @@ body.flipbook-mode {
   pointer-events: none;
 }
 
-/* 1. KHI NỘI DUNG LỜI CHÚC VỪA VẶN TRONG KHUNG (FITS WITHOUT OVERFLOWING) */
+/* 1. KHI NỘI DUNG LỜI CHÚC VỪA VẶN TRONG KHUNG (ĐOÀN LÊ NA & CÁC THẺ VỪA VẶN) */
 .wish-container.is-fit-centered {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -452,17 +454,20 @@ body.flipbook-mode {
   justify-content: center;
   text-align: center;
   margin: auto 0;
-  font-size: 1.22rem;
+  font-size: 1.25rem;
   line-height: 1.7;
   width: 100%;
   height: auto;
   font-weight: 600;
   position: relative;
   z-index: 2;
+  overflow: visible;
 }
 
-/* 2. KHI LỜI CHÚC DÀI CẦN CUỘN (OVERFLOWING LIKE JINNIE'S LETTER) */
+/* 2. KHI LỜI CHÚC DÀI CẦN CUỘN (JINNIE & CÁC BÀI THƯ DÀI) */
 .wish-container.is-overflowing {
+  display: flex;
+  flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
 }
@@ -479,6 +484,7 @@ body.flipbook-mode {
   z-index: 2;
   font-weight: 500;
   white-space: pre-line;
+  margin: 0;
 }
 
 /* Mini scrollbar mượt cho khối nội dung wish */

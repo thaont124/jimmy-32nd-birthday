@@ -52,6 +52,26 @@ const bgAudio = document.getElementById('bgAudio');
 const volumeBtn = document.getElementById('volumeBtn');
 const volumeIcon = document.getElementById('volumeIcon');
 
+// ResizeObserver theo dõi chính xác layout của từng thẻ wish container
+const wishResizeObserver = new ResizeObserver((entries) => {
+  entries.forEach(entry => {
+    const containerEl = entry.target;
+    const wishEl = containerEl.querySelector('.fan-wish');
+    if (!wishEl) return;
+
+    // Đo đạc chính xác scrollHeight thực tế của text so với height của container
+    const isOverflowing = wishEl.scrollHeight > containerEl.clientHeight + 4;
+
+    if (isOverflowing) {
+      containerEl.classList.add('is-overflowing');
+      containerEl.classList.remove('is-fit-centered');
+    } else {
+      containerEl.classList.add('is-fit-centered');
+      containerEl.classList.remove('is-overflowing');
+    }
+  });
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   document.body.classList.add('flipbook-mode');
   
@@ -78,12 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.key === 'ArrowLeft') goToPrevPage();
       if (e.key === 'ArrowRight') goToNextPage();
     }
-  });
-
-  // Handle window resize to re-check centering
-  window.addEventListener('resize', () => {
-    const activeCard = activeCardContainer.querySelector('.memory-card');
-    if (activeCard) adjustWishCentering(activeCard);
   });
 });
 
@@ -124,24 +138,6 @@ function switchView(viewName) {
 // Get photo URL for card index (Randomized unique photo for each card)
 function getJimmyPhotoForIndex(index) {
   return JIMMY_PHOTOS[index % JIMMY_PHOTOS.length];
-}
-
-// Dynamic Auto-centering detection function
-function adjustWishCentering(cardElement) {
-  const wishEl = cardElement.querySelector('.fan-wish');
-  const containerEl = cardElement.querySelector('.wish-container');
-  if (!wishEl || !containerEl) return;
-
-  // Measure if content overflows container
-  const isOverflowing = wishEl.scrollHeight > containerEl.clientHeight - 10;
-  
-  if (isOverflowing) {
-    containerEl.classList.add('is-overflowing');
-    containerEl.classList.remove('is-fit-centered');
-  } else {
-    containerEl.classList.add('is-fit-centered');
-    containerEl.classList.remove('is-overflowing');
-  }
 }
 
 // Create Card HTML element for a given wish item
@@ -201,6 +197,12 @@ function createCardElement(wishItem, index) {
     </div>
   `;
 
+  // Đăng ký ResizeObserver theo dõi khối wish container của card này
+  const containerEl = cardDiv.querySelector('.wish-container');
+  if (containerEl) {
+    wishResizeObserver.observe(containerEl);
+  }
+
   return cardDiv;
 }
 
@@ -216,9 +218,6 @@ function renderCurrentPage() {
   const cardElement = createCardElement(currentWish, currentPageIndex);
   activeCardContainer.appendChild(cardElement);
 
-  // Auto-detect centering after DOM render
-  setTimeout(() => adjustWishCentering(cardElement), 0);
-
   pageIndicatorText.textContent = `Trang ${currentPageIndex + 1} / ${wishesData.length}`;
   prevPageBtn.disabled = currentPageIndex === 0;
   nextPageBtn.disabled = currentPageIndex === wishesData.length - 1;
@@ -233,11 +232,6 @@ function renderGridCards() {
     const cardEl = createCardElement(wish, idx);
     cardsGridContainer.appendChild(cardEl);
   });
-
-  setTimeout(() => {
-    const cards = cardsGridContainer.querySelectorAll('.memory-card');
-    cards.forEach(adjustWishCentering);
-  }, 0);
 }
 
 // Render Pagination Dots
