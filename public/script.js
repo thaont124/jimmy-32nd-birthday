@@ -79,6 +79,12 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.key === 'ArrowRight') goToNextPage();
     }
   });
+
+  // Handle window resize to re-check centering
+  window.addEventListener('resize', () => {
+    const activeCard = activeCardContainer.querySelector('.memory-card');
+    if (activeCard) adjustWishCentering(activeCard);
+  });
 });
 
 // Fetch Data from Server API
@@ -120,10 +126,28 @@ function getJimmyPhotoForIndex(index) {
   return JIMMY_PHOTOS[index % JIMMY_PHOTOS.length];
 }
 
-// Create Card HTML element for a given wish item with unique layout & styling
+// Dynamic Auto-centering detection function
+function adjustWishCentering(cardElement) {
+  const wishEl = cardElement.querySelector('.fan-wish');
+  const containerEl = cardElement.querySelector('.wish-container');
+  if (!wishEl || !containerEl) return;
+
+  // Measure if content overflows container
+  const isOverflowing = wishEl.scrollHeight > containerEl.clientHeight - 10;
+  
+  if (isOverflowing) {
+    containerEl.classList.add('is-overflowing');
+    containerEl.classList.remove('is-fit-centered');
+  } else {
+    containerEl.classList.add('is-fit-centered');
+    containerEl.classList.remove('is-overflowing');
+  }
+}
+
+// Create Card HTML element for a given wish item
 function createCardElement(wishItem, index) {
   const styleClass = CARD_STYLES[index % CARD_STYLES.length];
-  const layoutClass = CARD_LAYOUTS[index % CARD_LAYOUTS.length]; // Each card gets a different layout structure!
+  const layoutClass = CARD_LAYOUTS[index % CARD_LAYOUTS.length];
   
   const photoUrl = getJimmyPhotoForIndex(index);
   const fallbackUrl = '/assets/jimmy/jimmy_1.jpg';
@@ -192,6 +216,9 @@ function renderCurrentPage() {
   const cardElement = createCardElement(currentWish, currentPageIndex);
   activeCardContainer.appendChild(cardElement);
 
+  // Auto-detect centering after DOM render
+  setTimeout(() => adjustWishCentering(cardElement), 0);
+
   pageIndicatorText.textContent = `Trang ${currentPageIndex + 1} / ${wishesData.length}`;
   prevPageBtn.disabled = currentPageIndex === 0;
   nextPageBtn.disabled = currentPageIndex === wishesData.length - 1;
@@ -206,6 +233,11 @@ function renderGridCards() {
     const cardEl = createCardElement(wish, idx);
     cardsGridContainer.appendChild(cardEl);
   });
+
+  setTimeout(() => {
+    const cards = cardsGridContainer.querySelectorAll('.memory-card');
+    cards.forEach(adjustWishCentering);
+  }, 0);
 }
 
 // Render Pagination Dots

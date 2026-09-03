@@ -395,8 +395,8 @@ body.flipbook-mode {
 .card-body {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
+  justify-content: space-between;
+  align-items: center;
   min-height: 0;
   height: 100%;
   width: 100%;
@@ -422,7 +422,7 @@ body.flipbook-mode {
   flex-direction: column;
   padding: 1.2rem 1.4rem;
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.06);
   overflow: hidden;
 }
 
@@ -440,18 +440,45 @@ body.flipbook-mode {
   pointer-events: none;
 }
 
-.fan-wish {
-  font-size: 1.08rem;       /* Kích thước chữ đọc mượt mà */
+/* 1. KHI NỘI DUNG LỜI CHÚC VỪA VẶN TRONG KHUNG (FITS WITHOUT OVERFLOWING) */
+.wish-container.is-fit-centered {
+  justify-content: center;
+  align-items: center;
+}
+
+.wish-container.is-fit-centered .fan-wish {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: auto 0;
+  font-size: 1.22rem;
   line-height: 1.7;
-  white-space: pre-line;
-  text-align: left;         /* Đảm bảo từ dòng 1 hiển thị đầy đủ */
   width: 100%;
+  height: auto;
+  font-weight: 600;
+  position: relative;
+  z-index: 2;
+}
+
+/* 2. KHI LỜI CHÚC DÀI CẦN CUỘN (OVERFLOWING LIKE JINNIE'S LETTER) */
+.wish-container.is-overflowing {
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+.wish-container.is-overflowing .fan-wish {
+  display: block;
+  text-align: left;
+  overflow-y: auto;
+  font-size: 1.08rem;
+  line-height: 1.65;
   height: 100%;
-  overflow-y: auto;         /* Cho phép cuộn từ đầu đến cuối */
+  padding-right: 0.4rem;
   position: relative;
   z-index: 2;
   font-weight: 500;
-  padding-right: 0.4rem;
+  white-space: pre-line;
 }
 
 /* Mini scrollbar mượt cho khối nội dung wish */
@@ -467,10 +494,8 @@ body.flipbook-mode {
   border-radius: 4px;
 }
 
-/* ÁP DỤNG CĂN GIỮA DỌC & NGANG CHỈ CHO CÁC LỜI CHÚC NGẮN (< 80 KÝ TỰ) */
+/* ÁP DỤNG CĂN GIỮA NGHỆ THUẬT CHO CÁC LỜI CHÚC NGẮN (< 80 KÝ TỰ) */
 .short-wish-card .wish-container {
-  align-items: center;
-  justify-content: center;
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
@@ -482,11 +507,6 @@ body.flipbook-mode {
   line-height: 1.75;
   text-align: center;
   font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: auto 0;
-  overflow: visible;
 }
 
 .wish-decor-sparkles {
@@ -677,7 +697,7 @@ body.flipbook-mode {
 
 /* ==========================================================
    DẠNG LƯỚI (GRID VIEW STACKING LAYOUTS)
-   ========================================================= */
+   ========================================================== */
 .cards-grid .card-content-wrapper {
   flex-direction: column !important;
 }
