@@ -25,21 +25,30 @@
 }
 
 html, body {
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   margin: 0;
   padding: 0;
   font-family: var(--font-main);
   background-color: #0b1f18;
   color: var(--text-light);
+  overflow: hidden !important;
   position: relative;
 }
 
-/* KHÔNG SCROLL HOÀN TOÀN KHI Ở CHẾ ĐỘ FLIPBOOK */
+/* KHÔNG SCROLL TUYỆT ĐỐI TRÊN MÀN HÌNH FLIPBOOK MODE */
 html.flipbook-mode, body.flipbook-mode {
+  width: 100vw !important;
   height: 100vh !important;
   max-height: 100vh !important;
   overflow: hidden !important;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
 /* Background Image Layer sử dụng ảnh nền.png */
@@ -60,23 +69,23 @@ html.flipbook-mode, body.flipbook-mode {
    ========================================================== */
 .volume-btn {
   position: fixed;
-  top: 0.8rem;
-  right: 1.2rem;
+  top: 0.6rem;
+  right: 1rem;
   z-index: 999;
-  width: 42px;
-  height: 42px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   background: rgba(15, 45, 35, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--emerald-glow);
   color: var(--emerald-glow);
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 15px rgba(0, 255, 170, 0.3);
+  box-shadow: 0 0 12px rgba(0, 255, 170, 0.3);
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
@@ -84,7 +93,7 @@ html.flipbook-mode, body.flipbook-mode {
   transform: scale(1.1);
   background: var(--primary-green);
   color: #0b1f18;
-  box-shadow: 0 0 25px rgba(46, 204, 113, 0.8);
+  box-shadow: 0 0 20px rgba(46, 204, 113, 0.8);
 }
 
 .volume-btn.playing {
@@ -95,7 +104,7 @@ html.flipbook-mode, body.flipbook-mode {
 
 @keyframes pulseGlow {
   0% { box-shadow: 0 0 10px rgba(46, 204, 113, 0.5); }
-  50% { box-shadow: 0 0 22px rgba(46, 204, 113, 0.9); }
+  50% { box-shadow: 0 0 20px rgba(46, 204, 113, 0.9); }
   100% { box-shadow: 0 0 10px rgba(46, 204, 113, 0.5); }
 }
 
@@ -105,18 +114,19 @@ html.flipbook-mode, body.flipbook-mode {
 .app-header {
   position: relative;
   z-index: 10;
-  padding: 0.5rem 1rem 0.2rem;
+  padding: 0.3rem 1rem 0.1rem;
   text-align: center;
   flex-shrink: 0;
+  width: 100%;
 }
 
 .header-container {
-  max-width: 1000px;
+  max-width: 900px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.3rem;
 }
 
 .logo-wrapper {
@@ -125,21 +135,21 @@ html.flipbook-mode, body.flipbook-mode {
 }
 
 .site-logo {
-  max-width: 260px;
-  width: 70%;
+  max-width: 220px;
+  width: 60%;
   height: auto;
-  max-height: 60px;
+  max-height: 48px;
   object-fit: contain;
-  filter: drop-shadow(0 0 12px rgba(0, 255, 170, 0.35));
+  filter: drop-shadow(0 0 10px rgba(0, 255, 170, 0.35));
 }
 
 /* Compact Icon Toggle Buttons */
 .view-toggles-compact {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.4rem;
   background: rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(10px);
-  padding: 0.2rem 0.5rem;
+  padding: 0.15rem 0.4rem;
   border-radius: 30px;
   border: 1px solid var(--border-glass);
 }
@@ -148,10 +158,10 @@ html.flipbook-mode, body.flipbook-mode {
   background: transparent;
   border: none;
   color: var(--text-muted);
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -163,21 +173,24 @@ html.flipbook-mode, body.flipbook-mode {
   background: var(--primary-green);
   color: #0b1f18;
   transform: scale(1.08);
-  box-shadow: 0 0 15px rgba(46, 204, 113, 0.6);
+  box-shadow: 0 0 12px rgba(46, 204, 113, 0.6);
 }
 
 /* ==========================================================
-   MAIN LAYOUT & VIEWS (KHUNG HÌNH VỪA KHÍT 1 MÀN HÌNH)
+   MAIN LAYOUT & VIEWS (GÓI GỌN HẰNG TRONG 100VH)
    ========================================================== */
 .app-main {
   position: relative;
   z-index: 5;
-  max-width: 1000px;
+  max-width: 900px;
+  width: 100%;
   margin: 0 auto;
   padding: 0 0.8rem;
-  height: calc(100vh - 120px); /* Vừa khít màn hình */
+  flex: 1;
+  min-height: 0; /* Cho phép flex child co vừa khít 100vh */
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .view-section {
@@ -209,20 +222,21 @@ html.flipbook-mode, body.flipbook-mode {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.8rem;
   flex: 1;
-  min-height: 0; /* Quan trọng để không bị đẩy bung màn hình */
+  min-height: 0;
   width: 100%;
+  overflow: hidden;
 }
 
 .nav-arrow {
   background: rgba(0, 0, 0, 0.55);
   border: 2px solid var(--border-glass);
   color: #fff;
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -236,7 +250,7 @@ html.flipbook-mode, body.flipbook-mode {
   background: var(--primary-green);
   color: #0b1f18;
   transform: scale(1.1);
-  box-shadow: 0 0 20px rgba(46, 204, 113, 0.6);
+  box-shadow: 0 0 15px rgba(46, 204, 113, 0.6);
 }
 
 .nav-arrow:disabled {
@@ -246,12 +260,13 @@ html.flipbook-mode, body.flipbook-mode {
 
 .book-stage {
   flex: 1;
-  max-width: 480px;
+  max-width: 440px;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 0;
+  overflow: hidden;
 }
 
 .card-display-area {
@@ -265,13 +280,13 @@ html.flipbook-mode, body.flipbook-mode {
 
 .pagination-bar {
   text-align: center;
-  padding: 0.2rem 0 0.4rem;
+  padding: 0.15rem 0 0.3rem;
   flex-shrink: 0;
 }
 
 #pageIndicatorText {
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   color: var(--emerald-glow);
   letter-spacing: 1px;
 }
@@ -279,17 +294,17 @@ html.flipbook-mode, body.flipbook-mode {
 .page-dots {
   display: flex;
   justify-content: center;
-  gap: 5px;
-  margin-top: 0.3rem;
+  gap: 4px;
+  margin-top: 0.25rem;
   flex-wrap: wrap;
-  max-width: 450px;
+  max-width: 400px;
   margin-left: auto;
   margin-right: auto;
 }
 
 .dot {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.3);
   cursor: pointer;
@@ -299,7 +314,7 @@ html.flipbook-mode, body.flipbook-mode {
 .dot.active {
   background: var(--primary-green);
   transform: scale(1.3);
-  box-shadow: 0 0 8px var(--primary-green);
+  box-shadow: 0 0 6px var(--primary-green);
 }
 
 /* ==========================================================
@@ -307,26 +322,26 @@ html.flipbook-mode, body.flipbook-mode {
    ========================================================== */
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.2rem;
   padding-bottom: 2rem;
   padding-top: 0.5rem;
 }
 
 /* ==========================================================
-   MEMORY CARD DESIGNS (TỐI ƯU HEIGHT VỪA KHÍT NỀN NO-SCROLL)
+   MEMORY CARD DESIGNS (CẮT GỌN VỪA KHÍT 1 MÀN HÌNH)
    ========================================================== */
 .memory-card {
   position: relative;
-  border-radius: 16px;
-  padding: 1rem;
+  border-radius: 14px;
+  padding: 0.8rem 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  max-height: calc(100vh - 180px);
+  max-height: 100%;
   overflow: hidden;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
 }
 
 .flipbook-wrapper .memory-card {
@@ -338,37 +353,37 @@ html.flipbook-mode, body.flipbook-mode {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
   flex-shrink: 0;
 }
 
 .card-badge {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  padding: 0.18rem 0.55rem;
-  border-radius: 8px;
+  padding: 0.15rem 0.5rem;
+  border-radius: 6px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-/* KHUNG ẢNH DÀI CHIỀU DỌC TỐI ƯU GỌN TRONG 1 MÀN HÌNH */
+/* KHUNG ẢNH DÀI CHIỀU DỌC TỐI ƯU CHO KHUNG HÌNH NO-SCROLL */
 .card-image-wrap {
   width: 100%;
-  height: min(240px, 32vh); /* Chiều cao vừa khít không bị nén hay tràn */
-  border-radius: 10px;
+  height: min(200px, 26vh); /* Chiều cao vừa khít không bị nén hay tràn */
+  border-radius: 8px;
   overflow: hidden;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.5rem;
   position: relative;
   background: rgba(0, 0, 0, 0.2);
   flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
 }
 
 .card-image-wrap img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: top center; /* Giữ lấy phần khuôn mặt, đầu và mắt của P'Jim */
+  object-position: top center; /* Giữ khuôn mặt, đầu và mắt của P'Jim */
   transition: transform 0.5s ease;
 }
 
@@ -377,21 +392,22 @@ html.flipbook-mode, body.flipbook-mode {
   min-height: 0;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .fan-name {
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 700;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.25rem;
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.3rem;
   flex-shrink: 0;
 }
 
 .fan-wish {
-  font-size: 0.88rem;
-  line-height: 1.45;
+  font-size: 0.84rem;
+  line-height: 1.4;
   white-space: pre-line;
   flex: 1;
   overflow-y: auto;
@@ -399,21 +415,21 @@ html.flipbook-mode, body.flipbook-mode {
 }
 
 .fan-wish::-webkit-scrollbar {
-  width: 4px;
+  width: 3px;
 }
 .fan-wish::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.3);
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
 .card-footer {
-  margin-top: 0.5rem;
-  padding-top: 0.4rem;
+  margin-top: 0.4rem;
+  padding-top: 0.3rem;
   border-top: 1px dashed rgba(255, 255, 255, 0.2);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: var(--text-muted);
   flex-shrink: 0;
 }
@@ -424,7 +440,7 @@ html.flipbook-mode, body.flipbook-mode {
 .style-polaroid {
   background: #fdfdfb;
   color: #1a1a1a;
-  border: 7px solid #ffffff;
+  border: 6px solid #ffffff;
   transform: rotate(-0.8deg);
   font-family: var(--font-main);
 }
@@ -441,7 +457,7 @@ html.flipbook-mode, body.flipbook-mode {
 
 .style-polaroid .fan-wish {
   font-family: var(--font-hand);
-  font-size: 1.18rem;
+  font-size: 1.1rem;
   color: #2c3e50;
   font-weight: 600;
 }
@@ -450,8 +466,8 @@ html.flipbook-mode, body.flipbook-mode {
   position: absolute;
   top: -8px;
   left: 35%;
-  width: 70px;
-  height: 18px;
+  width: 60px;
+  height: 16px;
   background: rgba(230, 230, 200, 0.85);
   transform: rotate(-3deg);
   border: 1px dashed rgba(0,0,0,0.15);
@@ -472,7 +488,7 @@ html.flipbook-mode, body.flipbook-mode {
   background: var(--bg-glass-card);
   backdrop-filter: blur(16px);
   border: 1px solid var(--emerald-glow);
-  box-shadow: 0 0 20px rgba(0, 255, 170, 0.25);
+  box-shadow: 0 0 15px rgba(0, 255, 170, 0.25);
 }
 
 .style-glass .fan-name {
@@ -489,7 +505,7 @@ html.flipbook-mode, body.flipbook-mode {
 .style-vintage {
   background: #f4ecd8;
   color: #3e2723;
-  border: 2px dashed #8d6e63;
+  border: 1.5px dashed #8d6e63;
   transform: rotate(0.6deg);
   font-family: var(--font-serif);
 }
@@ -497,7 +513,7 @@ html.flipbook-mode, body.flipbook-mode {
 .style-vintage .fan-name {
   color: #4e342e;
   border-bottom: 1.5px solid #8d6e63;
-  padding-bottom: 0.15rem;
+  padding-bottom: 0.1rem;
 }
 
 .style-vintage .card-badge {
@@ -507,17 +523,17 @@ html.flipbook-mode, body.flipbook-mode {
 
 .style-vintage .postal-stamp {
   position: absolute;
-  top: 8px;
-  right: 10px;
-  width: 38px;
-  height: 38px;
+  top: 6px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
   border: 1.5px dashed #b71c1c;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #b71c1c;
-  font-size: 0.55rem;
+  font-size: 0.5rem;
   font-weight: 700;
   transform: rotate(-12deg);
   text-align: center;
@@ -531,18 +547,18 @@ html.flipbook-mode, body.flipbook-mode {
 /* STYLE 4: CINEMATIC FILM STRIP */
 .style-film {
   background: #141414;
-  border: 2px solid #333;
+  border: 1.5px solid #333;
   color: #eee;
 }
 
 .style-film::before, .style-film::after {
   content: '▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪';
   display: block;
-  letter-spacing: 5px;
+  letter-spacing: 4px;
   color: #666;
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   text-align: center;
-  margin: -0.4rem 0 0.2rem;
+  margin: -0.4rem 0 0.15rem;
 }
 
 .style-film .fan-name {
@@ -558,7 +574,7 @@ html.flipbook-mode, body.flipbook-mode {
 .style-pastel {
   background: linear-gradient(135deg, #2b1055, #7597de);
   border: 1px solid var(--purple-glow);
-  box-shadow: 0 10px 25px rgba(155, 89, 182, 0.35);
+  box-shadow: 0 8px 20px rgba(155, 89, 182, 0.35);
 }
 
 .style-pastel .fan-name {
@@ -574,7 +590,7 @@ html.flipbook-mode, body.flipbook-mode {
 .style-gentleman {
   background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);
   border: 1.5px solid #f1c40f;
-  box-shadow: 0 0 18px rgba(241, 196, 15, 0.35);
+  box-shadow: 0 0 15px rgba(241, 196, 15, 0.35);
 }
 
 .style-gentleman .fan-name {
@@ -592,23 +608,20 @@ html.flipbook-mode, body.flipbook-mode {
    ========================================================== */
 @media (max-width: 768px) {
   .site-logo {
-    max-width: 210px;
+    max-width: 180px;
   }
   .volume-btn {
-    top: 0.5rem;
-    right: 0.5rem;
-    width: 36px;
-    height: 36px;
-    font-size: 0.95rem;
-  }
-  .app-main {
-    height: calc(100vh - 105px);
+    top: 0.4rem;
+    right: 0.4rem;
+    width: 34px;
+    height: 34px;
+    font-size: 0.9rem;
   }
   .nav-arrow {
-    width: 38px;
-    height: 38px;
+    width: 34px;
+    height: 34px;
   }
   .card-image-wrap {
-    height: min(200px, 28vh);
+    height: min(160px, 24vh);
   }
 }
