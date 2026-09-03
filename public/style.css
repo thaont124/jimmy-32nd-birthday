@@ -369,7 +369,7 @@ body.flipbook-mode {
   align-items: stretch;
 }
 
-/* Base Image Wrapper (Sạch đẹp, không bị thanh xám dư) */
+/* Base Image Wrapper */
 .card-image-wrap {
   position: relative;
   overflow: hidden;
@@ -391,12 +391,12 @@ body.flipbook-mode {
   border-radius: 6px;
 }
 
-/* Base Body & Wish Container (CĂN GIỮA DỌC & NGANG, CHỮ TO RÕ) */
+/* Base Body & Wish Container */
 .card-body {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-start;
   min-height: 0;
   height: 100%;
   width: 100%;
@@ -408,11 +408,9 @@ body.flipbook-mode {
   margin-bottom: 0.6rem;
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 0.5rem;
   flex-shrink: 0;
   width: 100%;
-  text-align: center;
 }
 
 .wish-container {
@@ -422,11 +420,10 @@ body.flipbook-mode {
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;      /* Căn giữa ngang */
-  justify-content: center;  /* Căn giữa dọc */
-  padding: 1.2rem 1.5rem;
+  padding: 1.2rem 1.4rem;
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.05);
+  overflow: hidden;
 }
 
 .style-polaroid .wish-container,
@@ -436,38 +433,60 @@ body.flipbook-mode {
 
 .quote-bg {
   position: absolute;
-  top: 12px;
-  left: 14px;
+  top: 10px;
+  left: 12px;
   font-size: 2.8rem;
   opacity: 0.12;
   pointer-events: none;
 }
 
 .fan-wish {
-  font-size: 1.28rem;       /* Chữ to đẹp, đọc rõ ràng */
+  font-size: 1.08rem;       /* Kích thước chữ đọc mượt mà */
   line-height: 1.7;
   white-space: pre-line;
-  text-align: center;       /* Căn giữa chữ */
+  text-align: left;         /* Đảm bảo từ dòng 1 hiển thị đầy đủ */
   width: 100%;
-  display: flex;
-  align-items: center;      /* Căn giữa nội dung văn bản */
-  justify-content: center;
-  margin: auto 0;           /* Không bao giờ bị dồn lên trên */
+  height: 100%;
+  overflow-y: auto;         /* Cho phép cuộn từ đầu đến cuối */
   position: relative;
   z-index: 2;
-  font-weight: 600;
-  overflow-y: auto;
-  padding: 0.4rem;
+  font-weight: 500;
+  padding-right: 0.4rem;
 }
 
-/* LỜI CHÚC PHONG CÁCH NGHỆ THUẬT & VIẾT TAY */
-.style-polaroid .fan-wish,
-.style-vintage .fan-wish,
+/* Mini scrollbar mượt cho khối nội dung wish */
+.fan-wish::-webkit-scrollbar {
+  width: 5px;
+}
+.fan-wish::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+.fan-wish::-webkit-scrollbar-thumb {
+  background: var(--primary-green);
+  border-radius: 4px;
+}
+
+/* ÁP DỤNG CĂN GIỮA DỌC & NGANG CHỈ CHO CÁC LỜI CHÚC NGẮN (< 80 KÝ TỰ) */
+.short-wish-card .wish-container {
+  align-items: center;
+  justify-content: center;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
 .short-wish-card .fan-wish {
-  font-size: 1.5rem;
+  font-size: 1.48rem;
   font-family: var(--font-hand);
-  font-weight: 700;
   line-height: 1.75;
+  text-align: center;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto 0;
+  overflow: visible;
 }
 
 .wish-decor-sparkles {
@@ -478,6 +497,7 @@ body.flipbook-mode {
   color: var(--gold-accent);
   opacity: 0.95;
   flex-shrink: 0;
+  width: 100%;
 }
 
 .card-footer {
@@ -657,7 +677,7 @@ body.flipbook-mode {
 
 /* ==========================================================
    DẠNG LƯỚI (GRID VIEW STACKING LAYOUTS)
-   ========================================================== */
+   ========================================================= */
 .cards-grid .card-content-wrapper {
   flex-direction: column !important;
 }
