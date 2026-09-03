@@ -4,7 +4,6 @@ let currentPageIndex = 0;
 let isAudioPlaying = false;
 
 // 81 Authentic Jimmy Jitaraphol Photos downloaded locally from the user's provided list!
-// 100% offline-ready, no expired CDN tokens, and 81 unique photos for all wishes!
 const TOTAL_JIMMY_PHOTOS = 81;
 let JIMMY_PHOTOS = Array.from({ length: TOTAL_JIMMY_PHOTOS }, (_, i) => `/assets/jimmy/jimmy_${i + 1}.jpg`);
 
@@ -116,6 +115,8 @@ function createCardElement(wishItem, index) {
   const styleClass = CARD_STYLES[index % CARD_STYLES.length];
   const photoUrl = getJimmyPhotoForIndex(index);
   const fallbackUrl = '/assets/jimmy/jimmy_1.jpg';
+  const wishText = wishItem.wish ? wishItem.wish.trim() : '';
+  const isShortWish = wishText.length < 75;
 
   // Decorative stamp/stickers
   let extraDecoration = '';
@@ -126,23 +127,31 @@ function createCardElement(wishItem, index) {
   }
 
   const cardDiv = document.createElement('div');
-  cardDiv.className = `memory-card ${styleClass}`;
+  cardDiv.className = `memory-card ${styleClass} ${isShortWish ? 'short-wish-card' : ''}`;
   cardDiv.innerHTML = `
     ${extraDecoration}
     <div class="card-top">
       <span class="card-badge">Trang #${index + 1}</span>
-      <span style="font-size: 0.8rem; opacity: 0.8;"><i class="fa-solid fa-sparkles"></i> 32nd Birthday</span>
+      <span style="font-size: 0.8rem; opacity: 0.85;"><i class="fa-solid fa-sparkles"></i> 32nd Birthday</span>
     </div>
 
-    <div class="card-image-wrap">
-      <img src="${photoUrl}" alt="Jimmy Jitaraphol" loading="lazy" onerror="this.onerror=null; this.src='${fallbackUrl}'">
-    </div>
-
-    <div class="card-body">
-      <div class="fan-name">
-        <i class="fa-solid fa-star" style="color:#f1c40f; font-size: 0.9rem;"></i> ${escapeHtml(wishItem.name)}
+    <div class="card-content-grid">
+      <div class="card-image-wrap">
+        <img src="${photoUrl}" alt="Jimmy Jitaraphol" loading="lazy" onerror="this.onerror=null; this.src='${fallbackUrl}'">
       </div>
-      <div class="fan-wish">${escapeHtml(wishItem.wish)}</div>
+
+      <div class="card-body">
+        <div class="fan-name">
+          <i class="fa-solid fa-star" style="color:#f1c40f; font-size: 0.9rem;"></i> ${escapeHtml(wishItem.name)}
+        </div>
+        
+        <div class="wish-container">
+          <i class="fa-solid fa-quote-left quote-bg"></i>
+          <div class="fan-wish">${escapeHtml(wishText)}</div>
+        </div>
+
+        ${isShortWish ? '<div class="wish-decor-sparkles"><i class="fa-solid fa-heart"></i> <i class="fa-solid fa-sparkles"></i> <i class="fa-solid fa-heart"></i></div>' : ''}
+      </div>
     </div>
 
     <div class="card-footer">
