@@ -11,52 +11,22 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Parse Excel responses file
-function getExcelWishes() {
-  const excelPath = path.join(__dirname, "Minigame Sinh Nhật P'Jim (Responses).xlsx");
-  let targetPath = excelPath;
-  if (!fs.existsSync(excelPath)) {
-    const files = fs.readdirSync(__dirname).filter(f => f.endsWith('.xlsx'));
-    if (files.length === 0) return [];
-    targetPath = path.join(__dirname, files[0]);
-  }
-
-  try {
-    const workbook = xlsx.readFile(targetPath);
-    const sheetName = workbook.SheetNames[0];
-    const sheet = workbook.Sheets[sheetName];
-    const rows = xlsx.utils.sheet_to_json(sheet, { header: 1 });
-
-    if (rows.length < 2) return [];
-
-    const wishes = [];
-    for (let i = 1; i < rows.length; i++) {
-      const row = rows[i];
-      if (!row || row.length === 0) continue;
-
-      const name = (row[2] || 'Người hâm mộ ẩn danh').toString().trim();
-      const fbLink = (row[3] || '').toString().trim();
-      const wishText = (row[4] || '').toString().trim();
-
-      if (name || wishText) {
-        wishes.push({
-          id: `wish-${i}`,
-          name: name || 'Nomnom Fan',
-          wish: wishText || "Chúc P'Jim tuổi 32 sinh nhật thật vui vẻ!",
-          fb: fbLink
-        });
-      }
+// Read wishes from static JSON file
+function getWishes() {
+  const jsonPath = path.join(__dirname, 'public', 'wishes.json');
+  if (fs.existsSync(jsonPath)) {
+    try {
+      return JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+    } catch (err) {
+      console.error('Error reading wishes.json:', err);
     }
-    return wishes;
-  } catch (err) {
-    console.error('Error parsing Excel file:', err);
-    return [];
   }
+  return [];
 }
 
 // API to get all wishes
 app.get('/api/wishes', (req, res) => {
-  const wishes = getExcelWishes();
+  const wishes = getWishes();
   res.json({
     success: true,
     total: wishes.length,
