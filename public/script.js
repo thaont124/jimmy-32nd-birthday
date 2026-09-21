@@ -106,30 +106,64 @@ document.addEventListener('DOMContentLoaded', () => {
   // Auto-play audio on first user click anywhere if blocked by browser policy
   document.body.addEventListener('click', initAutoplayOnFirstClick, { once: true });
 
-  // Keyboard navigation
+  // Keyboard & ESC navigation
   document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeDeckModal();
     if (flipbookSection.classList.contains('active')) {
       if (e.key === 'ArrowLeft') goToPrevPage();
       if (e.key === 'ArrowRight') goToNextPage();
     }
   });
+
+  // Responsive resize listener for Deck layout
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      if (deckSection && deckSection.classList.contains('active')) {
+        renderDeckCards();
+      }
+    }, 150);
+  });
 });
 
-// Fetch Data from Server API
+// Fetch Data from Server API (with automatic static fallback for Cloudflare Pages / Vercel / GitHub Pages)
 async function fetchWishesData() {
   try {
     const res = await fetch('/api/wishes');
-    const data = await res.json();
-    if (data.success) {
-      wishesData = data.wishes;
-      renderCurrentPage();
-      renderGridCards();
-      renderDeckCards();
-      renderPageDots();
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.success && Array.isArray(data.wishes) && data.wishes.length > 0) {
+        wishesData = data.wishes;
+        renderAllViews();
+        return;
+      }
     }
   } catch (err) {
-    console.error('Error fetching wishes:', err);
+    console.log('Server API endpoint not available, falling back to static wishes.json file...');
   }
+
+  // Fallback for static hosting (Cloudflare Pages / Vercel / GitHub Pages)
+  try {
+    const staticRes = await fetch('/wishes.json');
+    if (staticRes.ok) {
+      const data = await staticRes.json();
+      if (Array.isArray(data) && data.length > 0) {
+        wishesData = data;
+        renderAllViews();
+        return;
+      }
+    }
+  } catch (err) {
+    console.error('Error fetching static wishes.json:', err);
+  }
+}
+
+function renderAllViews() {
+  renderCurrentPage();
+  renderGridCards();
+  renderDeckCards();
+  renderPageDots();
 }
 
 // Switch View Mode (Flipbook vs Grid vs Deck)
@@ -379,6 +413,9 @@ function renderDeckCards() {
   const N = wishesData.length;
   const middleIndex = (N - 1) / 2;
 
+  const isMobile = window.innerWidth <= 768;
+  const isSmallMobile = window.innerWidth <= 480;
+
   wishesData.forEach((wishItem, idx) => {
     const cardWrapper = document.createElement('div');
     cardWrapper.className = 'playing-card-wrapper';
@@ -392,24 +429,28 @@ function renderDeckCards() {
     cardWrapper.setAttribute('data-rank', rank);
     cardWrapper.style.zIndex = idx + 1;
 
-    // Calculate layout transforms based on submode
+    // Calculate layout transforms based on submode and screen size
     let transformStr = '';
     if (currentDeckSubMode === 'fan') {
-      const angleStep = Math.min(3.2, 70 / N);
+      const maxSpanX = isSmallMobile ? 240 : isMobile ? 360 : 820;
+      const maxAngle = isSmallMobile ? 32 : isMobile ? 46 : 70;
+      const angleStep = Math.min(2.0, maxAngle / N);
       const rotation = (idx - middleIndex) * angleStep;
-      const xStep = Math.min(36, 820 / N);
+      const xStep = Math.min(isSmallMobile ? 12 : isMobile ? 18 : 36, maxSpanX / N);
       const translateX = (idx - middleIndex) * xStep;
-      const arcY = Math.pow(idx - middleIndex, 2) * (N > 15 ? 0.65 : 1.1);
+      const arcFactor = isSmallMobile ? 0.22 : isMobile ? 0.38 : (N > 15 ? 0.65 : 1.1);
+      const arcY = Math.pow(idx - middleIndex, 2) * arcFactor;
       transformStr = `translate3d(${translateX}px, ${arcY}px, 0) rotate(${rotation}deg)`;
     } else if (currentDeckSubMode === 'stack') {
-      const offsetX = (idx % 3 - 1) * 6;
-      const offsetY = idx * 3.5;
-      const rotation = (idx % 5 - 2) * 1.5;
+      const offsetX = (idx % 3 - 1) * (isMobile ? 3 : 6);
+      const offsetY = idx * (isMobile ? 2 : 3.5);
+      const rotation = (idx % 5 - 2) * 1.2;
       transformStr = `translate3d(${offsetX}px, ${offsetY}px, 0) rotate(${rotation}deg)`;
     } else if (currentDeckSubMode === 'cascade') {
-      const translateX = (idx - middleIndex) * 45;
-      const offsetY = (idx % 2) * 18;
-      const rotation = (idx % 3 - 1) * 3;
+      const stepX = isSmallMobile ? 16 : isMobile ? 22 : 45;
+      const translateX = (idx - middleIndex) * stepX;
+      const offsetY = (idx % 2) * (isMobile ? 10 : 18);
+      const rotation = (idx % 3 - 1) * 2;
       transformStr = `translate3d(${translateX}px, ${offsetY}px, 0) rotate(${rotation}deg)`;
     }
 
