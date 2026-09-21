@@ -38,14 +38,27 @@ const CARD_LAYOUTS = [
 // DOM Elements
 const flipbookSection = document.getElementById('flipbookSection');
 const gridSection = document.getElementById('gridSection');
+const deckSection = document.getElementById('deckSection');
 const btnFlipbookView = document.getElementById('btnFlipbookView');
 const btnGridView = document.getElementById('btnGridView');
+const btnDeckView = document.getElementById('btnDeckView');
 const activeCardContainer = document.getElementById('activeCardContainer');
 const cardsGridContainer = document.getElementById('cardsGridContainer');
+const cardsDeckContainer = document.getElementById('cardsDeckContainer');
+const shuffleDeckBtn = document.getElementById('shuffleDeckBtn');
+const btnFanMode = document.getElementById('btnFanMode');
+const btnStackMode = document.getElementById('btnStackMode');
+const btnCascadeMode = document.getElementById('btnCascadeMode');
+const deckModalOverlay = document.getElementById('deckModalOverlay');
+const closeDeckModalBtn = document.getElementById('closeDeckModalBtn');
+const deckModalCardBody = document.getElementById('deckModalCardBody');
+const goToFlipbookFromDeckBtn = document.getElementById('goToFlipbookFromDeckBtn');
 const prevPageBtn = document.getElementById('prevPageBtn');
 const nextPageBtn = document.getElementById('nextPageBtn');
 const pageIndicatorText = document.getElementById('pageIndicatorText');
 const pageDots = document.getElementById('pageDots');
+
+let selectedDeckCardIndex = 0;
 
 // Audio Player & Volume Button Elements
 const bgAudio = document.getElementById('bgAudio');
@@ -63,6 +76,27 @@ document.addEventListener('DOMContentLoaded', () => {
   // View toggle listeners
   btnFlipbookView.addEventListener('click', () => switchView('flipbook'));
   btnGridView.addEventListener('click', () => switchView('grid'));
+  btnDeckView.addEventListener('click', () => switchView('deck'));
+  
+  if (shuffleDeckBtn) shuffleDeckBtn.addEventListener('click', shuffleAndPickRandomCard);
+  if (btnFanMode) btnFanMode.addEventListener('click', () => setDeckSubMode('fan'));
+  if (btnStackMode) btnStackMode.addEventListener('click', () => setDeckSubMode('stack'));
+  if (btnCascadeMode) btnCascadeMode.addEventListener('click', () => setDeckSubMode('cascade'));
+
+  if (closeDeckModalBtn) closeDeckModalBtn.addEventListener('click', closeDeckModal);
+  if (deckModalOverlay) {
+    deckModalOverlay.addEventListener('click', (e) => {
+      if (e.target === deckModalOverlay) closeDeckModal();
+    });
+  }
+  if (goToFlipbookFromDeckBtn) {
+    goToFlipbookFromDeckBtn.addEventListener('click', () => {
+      closeDeckModal();
+      currentPageIndex = selectedDeckCardIndex;
+      switchView('flipbook');
+    });
+  }
+
   prevPageBtn.addEventListener('click', goToPrevPage);
   nextPageBtn.addEventListener('click', goToNextPage);
 
@@ -90,6 +124,7 @@ async function fetchWishesData() {
       wishesData = data.wishes;
       renderCurrentPage();
       renderGridCards();
+      renderDeckCards();
       renderPageDots();
     }
   } catch (err) {
@@ -97,21 +132,34 @@ async function fetchWishesData() {
   }
 }
 
-// Switch View Mode (Flipbook vs Grid)
+// Switch View Mode (Flipbook vs Grid vs Deck)
 function switchView(viewName) {
   if (viewName === 'flipbook') {
     flipbookSection.classList.add('active');
     gridSection.classList.remove('active');
+    deckSection.classList.remove('active');
     btnFlipbookView.classList.add('active');
     btnGridView.classList.remove('active');
+    btnDeckView.classList.remove('active');
     document.body.classList.add('flipbook-mode');
-  } else {
+  } else if (viewName === 'grid') {
     gridSection.classList.add('active');
     flipbookSection.classList.remove('active');
+    deckSection.classList.remove('active');
     btnGridView.classList.add('active');
-    btnGridView.classList.remove('active');
+    btnFlipbookView.classList.remove('active');
+    btnDeckView.classList.remove('active');
     document.body.classList.remove('flipbook-mode');
     renderGridCards();
+  } else if (viewName === 'deck') {
+    deckSection.classList.add('active');
+    flipbookSection.classList.remove('active');
+    gridSection.classList.remove('active');
+    btnDeckView.classList.add('active');
+    btnFlipbookView.classList.remove('active');
+    btnGridView.classList.remove('active');
+    document.body.classList.remove('flipbook-mode');
+    renderDeckCards();
   }
 }
 
@@ -301,4 +349,123 @@ function escapeHtml(str) {
       "'": '&#039;'
     }[m];
   });
+}
+
+// ==========================================================
+// CHIA BÀI TÂY (CARDS FAN / DECK SPREAD MODE) LOGIC
+// ==========================================================
+const CARD_SUITS = ['♠', '♥', '♣', '♦'];
+const CARD_RANKS = ['A', 'K', 'Q', 'J', '10', '9', '8', '7', '6', '5', '4', '3', '2'];
+
+let currentDeckSubMode = 'fan';
+
+function setDeckSubMode(mode) {
+  currentDeckSubMode = mode;
+  [btnFanMode, btnStackMode, btnCascadeMode].forEach(btn => {
+    if (btn) btn.classList.remove('active');
+  });
+  if (mode === 'fan' && btnFanMode) btnFanMode.classList.add('active');
+  if (mode === 'stack' && btnStackMode) btnStackMode.classList.add('active');
+  if (mode === 'cascade' && btnCascadeMode) btnCascadeMode.classList.add('active');
+  renderDeckCards();
+}
+
+function renderDeckCards() {
+  if (!cardsDeckContainer) return;
+  cardsDeckContainer.innerHTML = '';
+  cardsDeckContainer.className = `cards-deck ${currentDeckSubMode}-mode`;
+  if (wishesData.length === 0) return;
+
+  const N = wishesData.length;
+  const middleIndex = (N - 1) / 2;
+
+  wishesData.forEach((wishItem, idx) => {
+    const cardWrapper = document.createElement('div');
+    cardWrapper.className = 'playing-card-wrapper';
+    
+    // Playing Card Suit & Rank
+    const suit = CARD_SUITS[idx % CARD_SUITS.length];
+    const rank = CARD_RANKS[idx % CARD_RANKS.length];
+    const isRed = suit === '♥' || suit === '♦';
+
+    cardWrapper.setAttribute('data-suit', suit);
+    cardWrapper.setAttribute('data-rank', rank);
+    cardWrapper.style.zIndex = idx + 1;
+
+    // Calculate layout transforms based on submode
+    let transformStr = '';
+    if (currentDeckSubMode === 'fan') {
+      const angleStep = Math.min(3.2, 70 / N);
+      const rotation = (idx - middleIndex) * angleStep;
+      const xStep = Math.min(36, 820 / N);
+      const translateX = (idx - middleIndex) * xStep;
+      const arcY = Math.pow(idx - middleIndex, 2) * (N > 15 ? 0.65 : 1.1);
+      transformStr = `translate3d(${translateX}px, ${arcY}px, 0) rotate(${rotation}deg)`;
+    } else if (currentDeckSubMode === 'stack') {
+      const offsetX = (idx % 3 - 1) * 6;
+      const offsetY = idx * 3.5;
+      const rotation = (idx % 5 - 2) * 1.5;
+      transformStr = `translate3d(${offsetX}px, ${offsetY}px, 0) rotate(${rotation}deg)`;
+    } else if (currentDeckSubMode === 'cascade') {
+      const translateX = (idx - middleIndex) * 45;
+      const offsetY = (idx % 2) * 18;
+      const rotation = (idx % 3 - 1) * 3;
+      transformStr = `translate3d(${translateX}px, ${offsetY}px, 0) rotate(${rotation}deg)`;
+    }
+
+    cardWrapper.style.transform = transformStr;
+
+    // Create standard memory card
+    const innerCard = createCardElement(wishItem, idx);
+    
+    // Add Poker Badge to top right of card
+    const pokerBadge = document.createElement('div');
+    pokerBadge.className = `poker-badge ${isRed ? 'red-suit' : 'black-suit'}`;
+    pokerBadge.innerHTML = `<span class="badge-rank">${rank}</span><span class="badge-suit">${suit}</span>`;
+    innerCard.appendChild(pokerBadge);
+
+    cardWrapper.appendChild(innerCard);
+
+    // Click card to open full-screen focused Modal
+    cardWrapper.addEventListener('click', () => {
+      openDeckModal(idx);
+    });
+
+    cardsDeckContainer.appendChild(cardWrapper);
+  });
+}
+
+function openDeckModal(idx) {
+  if (!wishesData[idx] || !deckModalOverlay || !deckModalCardBody) return;
+  selectedDeckCardIndex = idx;
+  deckModalCardBody.innerHTML = '';
+  const cardElement = createCardElement(wishesData[idx], idx);
+  deckModalCardBody.appendChild(cardElement);
+  deckModalOverlay.classList.add('active');
+}
+
+function closeDeckModal() {
+  if (deckModalOverlay) deckModalOverlay.classList.remove('active');
+}
+
+function shuffleAndPickRandomCard() {
+  if (wishesData.length === 0 || !cardsDeckContainer) return;
+
+  const cardWrappers = cardsDeckContainer.querySelectorAll('.playing-card-wrapper');
+  
+  // Shuffle animation: fly out randomly
+  cardWrappers.forEach((card) => {
+    const randomX = (Math.random() - 0.5) * 360;
+    const randomY = (Math.random() - 0.5) * 200;
+    const randomRot = (Math.random() - 0.5) * 80;
+    card.style.transition = 'all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+    card.style.transform = `translate3d(${randomX}px, ${randomY}px, 0) rotate(${randomRot}deg)`;
+  });
+
+  // After 400ms, reset deck layout and open random card in modal
+  setTimeout(() => {
+    renderDeckCards();
+    const randomIdx = Math.floor(Math.random() * wishesData.length);
+    openDeckModal(randomIdx);
+  }, 400);
 }

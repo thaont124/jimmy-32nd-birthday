@@ -35,13 +35,16 @@
         <img src="/assets/logo.png" alt="Logo Sinh Nhật P'Jim" class="site-logo">
       </div>
 
-      <!-- Icon Toggle Lật Sách / Dạng Lưới -->
+      <!-- Icon Toggle Lật Sách / Dạng Lưới / Chia Bài Tây -->
       <div class="view-toggles-compact">
         <button id="btnFlipbookView" class="icon-toggle-btn active" title="Xem Lật Sách (Flipbook)">
           <i class="fa-solid fa-book-open"></i>
         </button>
         <button id="btnGridView" class="icon-toggle-btn" title="Xem Dạng Lưới">
           <i class="fa-solid fa-border-all"></i>
+        </button>
+        <button id="btnDeckView" class="icon-toggle-btn" title="Xem Kiểu Chia Bài Tây (Cards Deck)">
+          <i class="fa-solid fa-layer-group"></i>
         </button>
       </div>
     </div>
@@ -83,7 +86,48 @@
         <!-- Dynamic Cards grid rendered by JS -->
       </div>
     </section>
+
+    <!-- VIEW 3: CARDS FAN / DECK SPREAD VIEW (CHIA BÀI TÂY) -->
+    <section id="deckSection" class="view-section">
+      <div class="deck-header-bar">
+        <button id="shuffleDeckBtn" class="deck-action-btn">
+          <i class="fa-solid fa-shuffle"></i> Tráo & Rút Bài Ngẫu Nhiên 🃏
+        </button>
+        <div class="deck-mode-toggle">
+          <button id="btnFanMode" class="deck-submode-btn active" title="Xòe Bài Dạng Quạt">
+            <i class="fa-solid fa-fan"></i> Xòe Quạt
+          </button>
+          <button id="btnStackMode" class="deck-submode-btn" title="Xếp Chồng Bộ Bài">
+            <i class="fa-solid fa-clone"></i> Xếp Chồng
+          </button>
+          <button id="btnCascadeMode" class="deck-submode-btn" title="Trải Bài Dòng Chảy">
+            <i class="fa-solid fa-bars-staggered"></i> Dòng Chảy
+          </button>
+        </div>
+      </div>
+
+      <div class="deck-stage">
+        <div id="cardsDeckContainer" class="cards-deck fan-mode">
+          <!-- Dynamic cards rendered by JS -->
+        </div>
+      </div>
+    </section>
   </main>
+
+  <!-- Modal Pop-up khi bấm vào Lá Bài Tây (Đặt ở root body để không bị gò gò bởi z-index/overflow parent) -->
+  <div id="deckModalOverlay" class="deck-modal-overlay">
+    <div class="deck-modal-box">
+      <button id="closeDeckModalBtn" class="close-deck-modal-btn" title="Đóng lá bài">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div id="deckModalCardBody" class="deck-modal-card-body"></div>
+      <div class="deck-modal-footer">
+        <button id="goToFlipbookFromDeckBtn" class="deck-modal-action-btn">
+          <i class="fa-solid fa-book-open"></i> Xem Trong Cuốn Lưu Bút (Flipbook)
+        </button>
+      </div>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
